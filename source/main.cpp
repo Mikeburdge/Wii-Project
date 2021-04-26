@@ -6,16 +6,20 @@
 //libOGC
 #include <gctypes.h>
 
-//Not sure what this is actually doing, just copied it over since the lack of it might fuck things up
+//Not sure what this is actually doing, but gettime() fails without it
 #include <DevKitPro/ogc/lwp_watchdog.h>
 
 #include <ostream>
 #include <fstream>
 #include <iostream>
 
+//Debugging
+#include "Statics\Statics.h"
+
 class SceneID;
 
 using namespace std;
+
 
 //TODO: LOOK INTO WHETHER I SHOULD HAVE u8 OR float OR u64 for limits 
 u8 LOW_LIMIT = 0.0167f;          // Keep At/Below 60fps
@@ -32,13 +36,15 @@ u8 HIGH_LIMIT = 0.1f;            // Keep At/Above 10fps
 int main(int argc, char **argv)
 {
 
+Debug::Log("start of the shit");
+
 //Initializes the VIDEO subsystem
 VIDEO_Init();
 
 float lastTime = gettime();
 
 //Calls Initial Functions (apparently, cant find anything what it is)
-// __lwp_watchdog_init();
+__lwp_watchdog_init();
 
 //Singletons:
 //Entity

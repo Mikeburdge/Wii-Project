@@ -45,16 +45,16 @@ public:
 	uint32_t gsHeight;
 
 	//Matrices - Coordinate spaces
-	Mtx m_view, m_model, m_modelview;
-	Mtx44 m_projection;
-	guVector m_cam, m_up, m_look;
-	float m_pitch,m_yaw;
+	Mtx view, model, modelview;
+	Mtx44 projection;
+	guVector cam, up, look;
+	float pitch,yaw;
 	    
     //Models
 	// std::vector<Mesh> m_meshes;
 
 	//Lighting
-	GXColor m_background;
+	GXColor background;
 
 	// //Textures
 	// TPLFile m_paletteTPL;

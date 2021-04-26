@@ -10,20 +10,21 @@
 
 using namespace std;
 
+
 Debug::Debug(){}
 
 Debug::~Debug(){}
 
 string Debug::getCurrentDateTime(string s)
 {
-    time_t now = time(0);
-    struct tm  tstruct;
+	time_t now;
+	now = time(NULL);
+	tm *tstruct = localtime(&now);
     char  buf[80];
-    localtime_s(&tstruct, &now);
     if (s == "now")
-        strftime(buf, sizeof(buf), "%d-%m-%Y_%H-%M-%S", &tstruct);
+        strftime(buf, sizeof(buf), "%d-%m-%Y_%H-%M-%S", tstruct);
     else if (s == "date")
-        strftime(buf, sizeof(buf), "%Y-%m-%d", &tstruct);
+        strftime(buf, sizeof(buf), "%Y-%m-%d", tstruct);
 
     return string(buf);
 };
