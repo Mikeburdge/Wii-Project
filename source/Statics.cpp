@@ -10,15 +10,9 @@
 
 using namespace std;
 
-Debug::Debug()
-{
+Debug::Debug(){}
 
-}
-Debug::~Debug()
-{
-    
-}
-
+Debug::~Debug(){}
 
 string Debug::getCurrentDateTime(string s)
 {
