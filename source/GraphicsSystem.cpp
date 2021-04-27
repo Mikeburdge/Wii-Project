@@ -48,7 +48,6 @@ void GraphicsSystem::Update(float deltaTime)
 
 }
 
-GraphicsSystem::~GraphicsSystem(){}
 
 void GraphicsSystem::InitGXVideo(){
 	
@@ -114,18 +113,10 @@ void GraphicsSystem::InitGXVideo(){
 	//set number of textures to generate
 	GX_SetNumTexGens(1);
 
+	//Invalidates the vertex cache and current texture memory cache
 	GX_InvVtxCache();
 	GX_InvalidateTexAll();
 	
-
-	GX_SetVtxDesc(GX_VA_POS, GX_DIRECT);
-	GX_SetVtxDesc(GX_VA_NRM, GX_DIRECT);
-	GX_SetVtxDesc(GX_VA_TEX0, GX_DIRECT);
-
-	GX_SetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XYZ, GX_F32, 0);
-	GX_SetVtxAttrFmt(GX_VTXFMT0, GX_VA_NRM, GX_NRM_XYZ, GX_F32, 0);
-	GX_SetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX0, GX_TEX_ST, GX_F32, 0);
-
 
 	// setup our projection matrix
 	// this creates a perspective matrix with a view angle of 90,
@@ -136,3 +127,37 @@ void GraphicsSystem::InitGXVideo(){
 	guPerspective(projection, 45, (f32)w/h, 0.1F, 1000.0F);
 	GX_LoadProjectionMtx(projection, GX_PERSPECTIVE);
 }
+
+void DrawHLine (int x1, int x2, int y, int color) {
+	int i;
+	y = 320 * y;
+	x1 >>= 1;
+	x2 >>= 1;
+	for (i = x1; i <= x2; i++) {
+		
+		for(uint8_t videoIndex = 0; videoIndex < FRAMEBUFFER_SIZE; videoIndex++) {
+		u32 *tmpfb = (uint32_t *)MEM_K0_TO_K1(SYS_AllocateFramebuffer(videoMode));
+		tmpfb[y+i] = color;
+	}
+
+
+	}
+}
+
+void DrawVLine (int x, int y1, int y2, int color) {
+	int i;
+	x >>= 1;
+	for (i = y1; i <= y2; i++) {
+		u32 *tmpfb = xfb;
+		tmpfb[x + (640 * i) / 2] = color;
+	}
+}
+
+void DrawBox (int x1, int y1, int x2, int y2, int color) {
+	DrawHLine (x1, x2, y1, color);
+	DrawHLine (x1, x2, y2, color);
+	DrawVLine (x1, y1, y2, color);
+	DrawVLine (x2, y1, y2, color);
+}
+
+GraphicsSystem::~GraphicsSystem(){}
