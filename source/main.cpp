@@ -59,8 +59,6 @@ int main(int argc, char **argv)
   //AI
   AISystem *SysAI = AISystem::GetInstance();
 
-  //init the graphics system
-  SysGraphics->InitGXVideo();
 
   //Load the first scene we want to see
   SysEntity->LoadScene(SceneID::SceneName::Testing);

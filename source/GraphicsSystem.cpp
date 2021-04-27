@@ -7,7 +7,6 @@ using namespace std;
 GraphicsSystem::GraphicsSystem()
 {
 
-	///Init vars
 	camera = {0.0F, 0.0F, 0.0F};
 	up = {0.0F, 1.0F, 0.0F};
 	look = {0.0F, 0.0F, -1.0F};
@@ -22,7 +21,7 @@ GraphicsSystem::GraphicsSystem()
 
 	background = {80, 80, 255, 0};
 
- 	//init the graphics system
+	//init the graphics system
 	InitGXVideo();
 }
 
@@ -126,52 +125,32 @@ void GraphicsSystem::InitGXVideo()
 	GX_InvVtxCache();
 	GX_InvalidateTexAll();
 
-	// setup our projection matrix
-	// this creates a perspective matrix with a view angle of 90,
-	// and aspect ratio based on the display resolution
+	//projection matrix
+
 	f32 w = videoMode->viWidth;
 	f32 h = videoMode->viHeight;
 	//Render mtx
-	guPerspective(projection, 45, (f32)w / h, 0.1F, 1000.0F);
-	GX_LoadProjectionMtx(projection, GX_PERSPECTIVE);
+	guPerspective(projection, 45, (f32)w / h, 0.1F, 1000.0F); //creates a perspective matrix with a view angle of 90,
+	GX_LoadProjectionMtx(projection, GX_PERSPECTIVE);		  //and aspect ratio based on the display resolution
 }
 
 void GraphicsSystem::SetLight()
 {
-	int i;
-	y = 320 * y;
-	x1 >>= 1;
-	x2 >>= 1;
-	for (i = x1; i <= x2; i++)
-	{
-		for (uint8_t videoIndex = 0; videoIndex < FRAMEBUFFER_SIZE; videoIndex++)
-		{
-			u32 *tmpfb = videoFrameBuffer[videoIndex];
-			tmpfb[y + i] = color;
-		}
-	}
-}
+	guVector lpos;
+	GXLightObj lobj;
 
-void GraphicsSystem::DrawVLine(int x, int y1, int y2, int color)
-{
-	int i;
-	x >>= 1;
-	for (i = y1; i <= y2; i++)
-	{
-		for (uint8_t videoIndex = 0; videoIndex < FRAMEBUFFER_SIZE; videoIndex++)
-		{
-			u32 *tmpfb = videoFrameBuffer[videoIndex];
-			tmpfb[x + (640 * i) / 2] = color;
-		}
-	}
-}
+	lpos.x = 0.0f;
+	lpos.y = 100.0f;
+	lpos.z = 0.0f;
 
-void GraphicsSystem::DrawBox(int x1, int y1, int x2, int y2, int color)
-{
-	DrawHLine(x1, x2, y1, color);
-	DrawHLine(x1, x2, y2, color);
-	DrawVLine(x1, y1, y2, color);
-	DrawVLine(x2, y1, y2, color);
+	GX_InitLightPos(&lobj, lpos.x, lpos.y, lpos.z);
+	GX_InitLightColor(&lobj, lightColor[0]);
+	GX_LoadLightObj(&lobj, GX_LIGHT0);
+
+	GX_SetNumChans(1);
+	GX_SetChanCtrl(GX_COLOR0A0, GX_ENABLE, GX_SRC_REG, GX_SRC_VTX,
+				   GX_LIGHT0, GX_DF_CLAMP, GX_AF_NONE);
+	GX_SetChanAmbColor(GX_COLOR0A0, lightColor[1]);
 }
 
 void GraphicsSystem::EndFrame()

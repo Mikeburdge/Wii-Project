@@ -51,19 +51,13 @@ public:
 	// std::vector<Mesh> m_meshes;
 
 	//Lighting
-	GXColor lightColor [2];
+	GXColor lightColor[2];
 	GXColor background;
 
 	// //Textures
 	// TPLFile m_paletteTPL;
 
-	//draw lines and box
-	void DrawHLine(int x1, int x2, int y, int color);
-	void DrawVLine(int x, int y1, int y2, int color);
-
-	void DrawBox(int x1, int y1, int x2, int y2, int color);
 public:
-
 	void SetLight();
 
 public:
