@@ -36,7 +36,7 @@ u8 HIGH_LIMIT = 0.1f;            // Keep At/Above 10fps
 int main(int argc, char **argv)
 {
 
-Debug::Log("start of the shit");
+Debug::Log("start of main");
 
 //Initializes the VIDEO subsystem
 VIDEO_Init();
@@ -55,6 +55,9 @@ GraphicsSystem* SysGraphics = GraphicsSystem::GetInstance();
 PhysicsSystem* SysPhysics = PhysicsSystem::GetInstance();
 //AI
 AISystem* SysAI = AISystem::GetInstance();
+
+//init the graphics system
+SysGraphics->InitGXVideo();
 
 //Load the first scene we want to see
 SysEntity->LoadScene(SceneID::SceneName::Testing);
