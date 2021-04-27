@@ -130,7 +130,7 @@ void GraphicsSystem::InitGXVideo()
 	GX_LoadProjectionMtx(projection, GX_PERSPECTIVE);
 }
 
-void DrawHLine(int x1, int x2, int y, int color)
+void GraphicsSystem::DrawHLine(int x1, int x2, int y, int color)
 {
 	int i;
 	y = 320 * y;
@@ -141,24 +141,27 @@ void DrawHLine(int x1, int x2, int y, int color)
 
 		for (uint8_t videoIndex = 0; videoIndex < FRAMEBUFFER_SIZE; videoIndex++)
 		{
-			u32 *tmpfb = (uint32_t *)MEM_K0_TO_K1(SYS_AllocateFramebuffer(videoMode));
+			u32 *tmpfb = videoFrameBuffer[videoIndex];
 			tmpfb[y + i] = color;
 		}
 	}
 }
 
-void DrawVLine(int x, int y1, int y2, int color)
+void GraphicsSystem::DrawVLine(int x, int y1, int y2, int color)
 {
 	int i;
 	x >>= 1;
 	for (i = y1; i <= y2; i++)
 	{
-		u32 *tmpfb = xfb;
-		tmpfb[x + (640 * i) / 2] = color;
+		for (uint8_t videoIndex = 0; videoIndex < FRAMEBUFFER_SIZE; videoIndex++)
+		{
+			u32 *tmpfb = videoFrameBuffer[videoIndex];
+			tmpfb[x + (640 * i) / 2] = color;
+		}
 	}
 }
 
-void DrawBox(int x1, int y1, int x2, int y2, int color)
+void GraphicsSystem::DrawBox(int x1, int y1, int x2, int y2, int color)
 {
 	DrawHLine(x1, x2, y1, color);
 	DrawHLine(x1, x2, y2, color);
