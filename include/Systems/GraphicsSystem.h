@@ -61,4 +61,7 @@ public:
 	void DrawVLine(int x, int y1, int y2, int color);
 
 	void DrawBox(int x1, int y1, int x2, int y2, int color);
+public:
+	//Called at the end of each frame
+	void EndFrame();
 };

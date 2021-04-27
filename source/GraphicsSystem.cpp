@@ -23,6 +23,8 @@ GraphicsSystem::GraphicsSystem()
 	InitGXVideo();
 }
 
+GraphicsSystem::~GraphicsSystem() {}
+
 GraphicsSystem *GraphicsSystem::myInstance = 0;
 
 GraphicsSystem *GraphicsSystem::GetInstance()
@@ -44,6 +46,7 @@ void GraphicsSystem::Update(float deltaTime)
 	// create a viewing matrix
 	guLookAt(view, &camera, &up, &look);
 
+	EndFrame();
 }
 
 void GraphicsSystem::InitGXVideo()
@@ -137,7 +140,6 @@ void GraphicsSystem::DrawHLine(int x1, int x2, int y, int color)
 	x2 >>= 1;
 	for (i = x1; i <= x2; i++)
 	{
-
 		for (uint8_t videoIndex = 0; videoIndex < FRAMEBUFFER_SIZE; videoIndex++)
 		{
 			u32 *tmpfb = videoFrameBuffer[videoIndex];
@@ -168,4 +170,21 @@ void GraphicsSystem::DrawBox(int x1, int y1, int x2, int y2, int color)
 	DrawVLine(x2, y1, y2, color);
 }
 
-GraphicsSystem::~GraphicsSystem() {}
+void GraphicsSystem::EndFrame()
+{
+	GX_SetZMode(GX_TRUE, GX_LEQUAL, GX_TRUE);
+	GX_SetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_CLEAR);
+	GX_SetAlphaUpdate(GX_TRUE);
+	GX_SetColorUpdate(GX_TRUE);
+	GX_CopyDisp(videoFrameBuffer[videoFrameBufferIndex], GX_TRUE);
+
+	//Tells the graphics processor that we're done drawing for this frame and waits to be called again
+	GX_DrawDone();
+
+	//Cycle through the multibuffer
+	VIDEO_SetNextFramebuffer(videoFrameBuffer[videoFrameBufferIndex]);
+
+	VIDEO_Flush();
+	VIDEO_WaitVSync();
+	videoFrameBufferIndex ^= 1;
+}
