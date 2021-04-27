@@ -8,31 +8,28 @@
 #include <malloc.h>
 
 #define FRAMEBUFFER_SIZE 2
-#define DEFAULT_FIFO_SIZE (1024*1024)
+#define DEFAULT_FIFO_SIZE (1024 * 1024)
 
 class GraphicsSystem : public SystemBase
 {
 private:
+	static GraphicsSystem *myInstance;
 
-    static GraphicsSystem* myInstance;
-
-    GraphicsSystem();
-
-public:
-
-    static GraphicsSystem* GetInstance();
-
-    virtual void Init();
-
-    virtual void Update(float deltaTime); 
-
-    ~GraphicsSystem();
-
-    void InitGXVideo();
+	GraphicsSystem();
 
 public:
+	static GraphicsSystem *GetInstance();
 
-//Variables
+	virtual void Init();
+
+	virtual void Update(float deltaTime);
+
+	~GraphicsSystem();
+
+	void InitGXVideo();
+
+public:
+	//Variables
 
 	//Video
 	GXRModeObj *videoMode;
@@ -40,7 +37,7 @@ public:
 	uint32_t videoFrameBufferIndex;
 
 	//Graphics
-	void* gsFifo;
+	void *gsFifo;
 	uint32_t gsWidth;
 	uint32_t gsHeight;
 
@@ -48,9 +45,9 @@ public:
 	Mtx view, model, modelview;
 	Mtx44 projection;
 	guVector camera, up, look;
-	float pitch,yaw;
-	    
-    //Models
+	float pitch, yaw;
+
+	//Models
 	// std::vector<Mesh> m_meshes;
 
 	//Lighting
@@ -59,4 +56,9 @@ public:
 	// //Textures
 	// TPLFile m_paletteTPL;
 
+	//draw lines and box
+	void DrawHLine(int x1, int x2, int y, int color);
+	void DrawVLine(int x, int y1, int y2, int color);
+
+	void DrawBox(int x1, int y1, int x2, int y2, int color);
 };

@@ -5,19 +5,16 @@
 class WpadSystem : public SystemBase
 {
 public:
-
-    static WpadSystem* myInstance;
+    static WpadSystem *myInstance;
 
     WpadSystem();
 
 public:
-
-    static WpadSystem* GetInstance();
+    static WpadSystem *GetInstance();
 
     virtual void Init();
 
-    virtual void Update(float deltaTime); 
+    virtual void Update(float deltaTime);
 
     ~WpadSystem();
-
 };
