@@ -1,12 +1,14 @@
+//Include our systems
 #include "Systems/EntitySystem.h"
 #include "Systems/GraphicsSystem.h"
+#include "Systems/WpadSystem.h"
 #include "Systems/PhysicsSystem.h"
 #include "Systems/AISystem.h"
 
 //libOGC
 #include <gctypes.h>
 
-//Not sure what this is actually doing, but gettime() fails without it
+//Not sure what this is actually doing, but gettime() and probably more fails without it
 #include <DevKitPro/ogc/lwp_watchdog.h>
 
 #include <ostream>
@@ -14,7 +16,7 @@
 #include <iostream>
 
 //Debugging
-#include "Statics\Statics.h"
+#include "Statics/Statics.h"
 
 class SceneID;
 
@@ -50,6 +52,8 @@ int main(int argc, char **argv)
   EntitySystem *SysEntity = EntitySystem::GetInstance();
   //Graphics
   GraphicsSystem *SysGraphics = GraphicsSystem::GetInstance();
+  //WPAD
+  WPadSystem *SysWPAD = WPadSystem::GetInstance();
   //Physics
   PhysicsSystem *SysPhysics = PhysicsSystem::GetInstance();
   //AI
@@ -78,12 +82,14 @@ int main(int argc, char **argv)
 
     //Update the different systems passign through deltatime
     SysGraphics->Update(deltaTime);
+    SysWPAD->Update(deltaTime);
     SysPhysics->Update(deltaTime);
     SysAI->Update(deltaTime);
     SysEntity->Update(deltaTime);
   }
 
   delete SysGraphics;
+  delete SysWPAD;
   delete SysPhysics;
   delete SysAI;
   delete SysEntity;

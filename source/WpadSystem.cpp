@@ -1,13 +1,13 @@
-#include "Systems\WpadSystem.h"
+#include "Systems/WpadSystem.h"
 
-#include <wiiuse\wpad.h>
+#include <wiiuse/wpad.h>
 
 //get viewport size
-#include "Systems\GraphicsSystem.h"
+#include "Systems/GraphicsSystem.h"
 
 using namespace std;
 
-WpadSystem::WpadSystem()
+WPadSystem::WPadSystem()
 {
     //Graphics
     GraphicsSystem *SysGraphics = GraphicsSystem::GetInstance();
@@ -17,23 +17,22 @@ WpadSystem::WpadSystem()
     WPAD_SetDataFormat(WPAD_CHAN_0, WPAD_FMT_BTNS_ACC_IR);
 }
 
-WpadSystem *WpadSystem::myInstance = 0;
+WPadSystem *WPadSystem::myInstance = 0;
 
-WpadSystem *WpadSystem::GetInstance()
+WPadSystem *WPadSystem::GetInstance()
 {
-    if (!myInstance)
-        myInstance = new WpadSystem();
+    if (!myInstance) myInstance = new WPadSystem();
 
     return myInstance;
 }
 
-void WpadSystem::Init()
+void WPadSystem::Init()
 {
 }
 
-void WpadSystem::Update(float deltaTime)
+void WPadSystem::Update(float deltaTime)
 {
-    
+
 }
 
-WpadSystem::~WpadSystem() {}
+WPadSystem::~WPadSystem() {}

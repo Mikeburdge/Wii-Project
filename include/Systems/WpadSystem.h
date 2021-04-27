@@ -2,19 +2,19 @@
 
 #include "SystemBase.h"
 
-class WpadSystem : public SystemBase
+class WPadSystem : public SystemBase
 {
 public:
-    static WpadSystem *myInstance;
+    static WPadSystem *myInstance;
 
-    WpadSystem();
+    WPadSystem();
 
 public:
-    static WpadSystem *GetInstance();
+    static WPadSystem *GetInstance();
 
     virtual void Init();
 
     virtual void Update(float deltaTime);
 
-    ~WpadSystem();
+    ~WPadSystem();
 };
