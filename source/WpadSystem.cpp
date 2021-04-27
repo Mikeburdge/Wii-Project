@@ -1,4 +1,4 @@
-#include "Systems/WpadSystem.h"
+#include "Systems/WPadSystem.h"
 
 #include <wiiuse/wpad.h>
 
@@ -7,8 +7,15 @@
 
 using namespace std;
 
+// MEM2 memory allocation routines. The application must provide these to
+// WPAD, so it can setup the data transfer buffer. This buffer must reside
+// in MEM2.
+static void *myAlloc(u32 size);
+static u8 myFree(void *ptr);
+
 WPadSystem::WPadSystem()
 {
+    WPADRegisterAllocator(myAloc, myFree);
     //Graphics
     GraphicsSystem *SysGraphics = GraphicsSystem::GetInstance();
 
@@ -21,7 +28,8 @@ WPadSystem *WPadSystem::myInstance = 0;
 
 WPadSystem *WPadSystem::GetInstance()
 {
-    if (!myInstance) myInstance = new WPadSystem();
+    if (!myInstance)
+        myInstance = new WPadSystem();
 
     return myInstance;
 }
@@ -32,7 +40,7 @@ void WPadSystem::Init()
 
 void WPadSystem::Update(float deltaTime)
 {
-
+    WPAD_ScanPads();
 }
 
 WPadSystem::~WPadSystem() {}

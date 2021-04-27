@@ -44,7 +44,6 @@ void GraphicsSystem::Update(float deltaTime)
 	// create a viewing matrix
 	guLookAt(view, &camera, &up, &look);
 
-	GX_Begin(GX_TRIANGLES, GX_VTXFMT0, 3);
 }
 
 void GraphicsSystem::InitGXVideo()
