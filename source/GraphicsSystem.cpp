@@ -17,9 +17,12 @@ GraphicsSystem::GraphicsSystem()
 
 	videoFrameBufferIndex = 0;
 
-	background = {31, 179, 242, 0};
+	lightColor[0] = {255, 255, 255, 255};
+	lightColor[1] = {150, 150, 150, 255};
 
-	//GX/VIDEO
+	background = {80, 80, 255, 0};
+
+ 	//init the graphics system
 	InitGXVideo();
 }
 
@@ -45,6 +48,7 @@ void GraphicsSystem::Update(float deltaTime)
 
 	// create a viewing matrix
 	guLookAt(view, &camera, &up, &look);
+	SetLight();
 
 	EndFrame();
 }
@@ -132,7 +136,7 @@ void GraphicsSystem::InitGXVideo()
 	GX_LoadProjectionMtx(projection, GX_PERSPECTIVE);
 }
 
-void GraphicsSystem::DrawHLine(int x1, int x2, int y, int color)
+void GraphicsSystem::SetLight()
 {
 	int i;
 	y = 320 * y;

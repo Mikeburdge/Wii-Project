@@ -51,6 +51,7 @@ public:
 	// std::vector<Mesh> m_meshes;
 
 	//Lighting
+	GXColor lightColor [2];
 	GXColor background;
 
 	// //Textures
@@ -61,6 +62,10 @@ public:
 	void DrawVLine(int x, int y1, int y2, int color);
 
 	void DrawBox(int x1, int y1, int x2, int y2, int color);
+public:
+
+	void SetLight();
+
 public:
 	//Called at the end of each frame
 	void EndFrame();
