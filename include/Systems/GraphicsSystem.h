@@ -14,7 +14,7 @@ class GraphicsSystem : public SystemBase
 {
 private:
 
-    static GraphicsSystem* m_instance;
+    static GraphicsSystem* myInstance;
 
     GraphicsSystem();
 
@@ -47,7 +47,7 @@ public:
 	//Matrices - Coordinate spaces
 	Mtx view, model, modelview;
 	Mtx44 projection;
-	guVector cam, up, look;
+	guVector camera, up, look;
 	float pitch,yaw;
 	    
     //Models

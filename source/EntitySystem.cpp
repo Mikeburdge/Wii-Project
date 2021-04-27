@@ -6,14 +6,14 @@ EntitySystem::EntitySystem(){}
 
 EntitySystem::~EntitySystem(){}
 
-EntitySystem* EntitySystem::m_instance = 0;
+EntitySystem* EntitySystem::myInstance = 0;
 
 EntitySystem* EntitySystem::GetInstance()
 {
-	if (!m_instance)
-		m_instance = new EntitySystem();
+	if (!myInstance)
+		myInstance = new EntitySystem();
 	
-    return m_instance;
+    return myInstance;
 }
 
 void EntitySystem::Init()

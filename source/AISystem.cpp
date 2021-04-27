@@ -6,14 +6,14 @@ AISystem::AISystem(){
 
 }
 
-AISystem* AISystem::m_instance = 0;
+AISystem* AISystem::myInstance = 0;
 
 AISystem* AISystem::GetInstance()
 {
-	if (!m_instance)
-		m_instance = new AISystem();
+	if (!myInstance)
+		myInstance = new AISystem();
 	
-    return m_instance;
+    return myInstance;
 }
 
 void AISystem::Init()

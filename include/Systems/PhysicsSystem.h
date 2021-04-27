@@ -13,7 +13,7 @@ class PhysicsSystem : public SystemBase
 {
 public:
 
-static PhysicsSystem* m_instance;
+static PhysicsSystem* myInstance;
 
 
     PhysicsSystem();

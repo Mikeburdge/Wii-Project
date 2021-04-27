@@ -11,7 +11,7 @@ class EntitySystem : public SystemBase
 {
 public:
 
-    static EntitySystem* m_instance;
+    static EntitySystem* myInstance;
 
     EntitySystem();
 

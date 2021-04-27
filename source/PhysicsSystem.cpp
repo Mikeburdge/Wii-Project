@@ -10,14 +10,14 @@ using namespace std;
 
 PhysicsSystem::PhysicsSystem(){}
 
-PhysicsSystem* PhysicsSystem::m_instance = 0;
+PhysicsSystem* PhysicsSystem::myInstance = 0;
 
 PhysicsSystem* PhysicsSystem::GetInstance()
 {
-	if (!m_instance)
-		m_instance = new PhysicsSystem();
+	if (!myInstance)
+		myInstance = new PhysicsSystem();
 	
-    return m_instance;
+    return myInstance;
 }
 
 void PhysicsSystem::Init()

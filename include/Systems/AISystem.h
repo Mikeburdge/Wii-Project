@@ -1,5 +1,4 @@
-#ifndef AISYSTEM_H_
-#define AISYSTEM_H_
+#pragma once
 
 #include "SystemBase.h"
 
@@ -7,7 +6,7 @@ class AISystem : public SystemBase
 {
 public:
 
-    static AISystem* m_instance;
+    static AISystem* myInstance;
 
     AISystem();
 
@@ -22,5 +21,3 @@ public:
     ~AISystem();
 
 };
-
-#endif /*AISYSTEM_H_*/
