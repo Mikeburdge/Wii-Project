@@ -7,7 +7,7 @@ using namespace std;
 GraphicsSystem::GraphicsSystem(){
 	
 	///Init vars
-	cam = {0.0F, 0.0F, 0.0F};
+	camera = {0.0F, 0.0F, 0.0F};
 	up = {0.0F, 1.0F, 0.0F};
 	look = {0.0F, 0.0F, -1.0F};
 
@@ -16,21 +16,21 @@ GraphicsSystem::GraphicsSystem(){
 
 	videoFrameBufferIndex = 0;
 
-	background = {80, 80, 255, 0};
+	background = {31, 179, 242, 0};
 
 	//GX/VIDEO
 	InitGXVideo();
 }
 
-GraphicsSystem* GraphicsSystem::m_instance = 0;
+GraphicsSystem* GraphicsSystem::myInstance = 0;
 
 GraphicsSystem * GraphicsSystem::GetInstance()
 {
-	if (!m_instance)
+	if (!myInstance)
 	{
-		m_instance = new GraphicsSystem();
+		myInstance = new GraphicsSystem();
 	}
-    return m_instance;
+    return myInstance;
 }
 
 void GraphicsSystem::Init()
@@ -42,7 +42,9 @@ void GraphicsSystem::Update(float deltaTime)
 {
 
 	// create a viewing matrix
-	guLookAt(view, &cam, &up, &look);
+	guLookAt(view, &camera, &up, &look);
+	
+	GX_Begin(GX_TRIANGLES,GX_VTXFMT0,3);
 
 }
 
@@ -115,6 +117,14 @@ void GraphicsSystem::InitGXVideo(){
 	GX_InvVtxCache();
 	GX_InvalidateTexAll();
 	
+
+	GX_SetVtxDesc(GX_VA_POS, GX_DIRECT);
+	GX_SetVtxDesc(GX_VA_NRM, GX_DIRECT);
+	GX_SetVtxDesc(GX_VA_TEX0, GX_DIRECT);
+
+	GX_SetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XYZ, GX_F32, 0);
+	GX_SetVtxAttrFmt(GX_VTXFMT0, GX_VA_NRM, GX_NRM_XYZ, GX_F32, 0);
+	GX_SetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX0, GX_TEX_ST, GX_F32, 0);
 
 
 	// setup our projection matrix
