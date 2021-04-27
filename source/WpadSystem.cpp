@@ -7,19 +7,15 @@
 
 using namespace std;
 
-// MEM2 memory allocation routines. The application must provide these to
-// WPAD, so it can setup the data transfer buffer. This buffer must reside
-// in MEM2.
-static void *myAlloc(u32 size);
-static u8 myFree(void *ptr);
-
 WPadSystem::WPadSystem()
 {
-    WPADRegisterAllocator(myAloc, myFree);
-    //Graphics
+    //Retrieve Graphics System
     GraphicsSystem *SysGraphics = GraphicsSystem::GetInstance();
 
+    //must register allocated and free memory to MEM2 before invoking WPADInit()
+    WPADRegisterAllocator(myAloc, myFree);
     WPAD_Init();
+
     WPAD_SetVRes(0, SysGraphics->gsWidth, SysGraphics->gsHeight);
     WPAD_SetDataFormat(WPAD_CHAN_0, WPAD_FMT_BTNS_ACC_IR);
 }
