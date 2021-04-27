@@ -1,5 +1,4 @@
-#ifndef SYSTEMBASE_H_
-#define SYSTEMBASE_H_
+#pragma once
 
 class SystemBase
 {
@@ -29,5 +28,3 @@ public:
    virtual void Update(float DeltaTime) = 0;
 
 };
-
-#endif /*SYSTEMBASE_H_*/
