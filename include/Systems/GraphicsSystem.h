@@ -28,7 +28,14 @@ public:
 
 	void InitGXVideo();
 
-public:
+	void CameraInit(void);
+
+	void SetLight();
+
+
+	//Called at the end of each frame
+	void EndFrame();
+
 	//Variables
 
 	//Video

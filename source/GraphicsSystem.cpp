@@ -1,16 +1,17 @@
 #include "Systems/GraphicsSystem.h"
 
+//fmemopen
+#include <stdio.h>
+
+
+#include <vector>
 #include <string.h>
+#include "ogc/gu.h"
 
 using namespace std;
 
 GraphicsSystem::GraphicsSystem()
 {
-
-	camera = {0.0F, 0.0F, 0.0F};
-	up = {0.0F, 1.0F, 0.0F};
-	look = {0.0F, 0.0F, -1.0F};
-
 	pitch = 0;
 	yaw = 0;
 
@@ -21,8 +22,11 @@ GraphicsSystem::GraphicsSystem()
 
 	background = {80, 80, 255, 0};
 
-	//init the graphics system
+	//Initialises the video
 	InitGXVideo();
+
+	// Initialize the camera.
+	CameraInit();
 }
 
 GraphicsSystem::~GraphicsSystem() {}
@@ -38,23 +42,23 @@ GraphicsSystem *GraphicsSystem::GetInstance()
 	return myInstance;
 }
 
-void GraphicsSystem::Init()
-{
-}
+void GraphicsSystem::Init() {}
 
 void GraphicsSystem::Update(float deltaTime)
 {
 
-	// create a viewing matrix
-	guLookAt(view, &camera, &up, &look);
+	//Create a viewing matrix
+	guLookAt(view, &camPt, &up, &origin);
+
+	//Update Lighting
 	SetLight();
 
+	//Call last each frame
 	EndFrame();
 }
 
 void GraphicsSystem::InitGXVideo()
 {
-
 	VIDEO_Init();
 
 	videoMode = VIDEO_GetPreferredMode(NULL);
@@ -124,14 +128,21 @@ void GraphicsSystem::InitGXVideo()
 	//Invalidates the vertex cache and current texture memory cache
 	GX_InvVtxCache();
 	GX_InvalidateTexAll();
+}
 
-	//projection matrix
+void GraphicsSystem::CameraInit(void)
+{
+	camPt = {0.0F, 0.0F, 0.0F};
+	up = {0.0F, 1.0F, 0.0F};
+	origin = {0.0F, 0.0F, -1.0F};
 
 	f32 w = videoMode->viWidth;
 	f32 h = videoMode->viHeight;
-	//Render mtx
-	guPerspective(projection, 45, (f32)w / h, 0.1F, 1000.0F); //creates a perspective matrix with a view angle of 90,
-	GX_LoadProjectionMtx(projection, GX_PERSPECTIVE);		  //and aspect ratio based on the display resolution
+
+	//creates a perspective projection matrix with a view angle of 90,
+	guPerspective(projection, 45, (f32)w / h, 0.1F, 1000.0F);
+
+	GX_LoadProjectionMtx(projection, GX_PERSPECTIVE);
 }
 
 void GraphicsSystem::SetLight()
@@ -151,6 +162,23 @@ void GraphicsSystem::SetLight()
 	GX_SetChanCtrl(GX_COLOR0A0, GX_ENABLE, GX_SRC_REG, GX_SRC_VTX,
 				   GX_LIGHT0, GX_DF_CLAMP, GX_AF_NONE);
 	GX_SetChanAmbColor(GX_COLOR0A0, lightColor[1]);
+}
+
+bool LoadMeshFromObj(string name, void *fileStream, unsigned int fileSize)
+{
+
+	//Temp variables to store obj
+	vector<unsigned int> vertexIndices, uvIndices, normalIndices;
+	vector<guVector> vertices;
+	vector<guVector> uvs;
+	vector<guVector> normals;
+
+	FILE *file = fmemopen(fileStream, fileSize, "r");
+	if (file == NULL)
+	{
+		printf("Impossible to open the file !\n");
+		return false;
+	}
 }
 
 void GraphicsSystem::EndFrame()
