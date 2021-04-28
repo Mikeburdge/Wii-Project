@@ -78,7 +78,7 @@ int main(int argc, char **argv)
 
     lastTime = currentTime;
 
-    //Update the different systems passign through deltatime
+    //Update the different systems passing through deltatime
     SysGraphics->Update(deltaTime);
     SysWPAD->Update(deltaTime);
     SysPhysics->Update(deltaTime);

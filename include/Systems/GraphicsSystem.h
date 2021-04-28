@@ -32,42 +32,45 @@ public:
 
 	void SetLight();
 
+	bool LoadMeshFromObj(std::string name, void *fileStream, unsigned int fileSize);
 
 	//Called at the end of each frame
 	void EndFrame();
 
 	//Variables
-
+public:
 	//Video
 	GXRModeObj *videoMode;
 	uint32_t *videoFrameBuffer[FRAMEBUFFER_SIZE];
 	uint32_t videoFrameBufferIndex;
 
+public:
 	//Graphics
 	void *gsFifo;
 	uint32_t gsWidth;
 	uint32_t gsHeight;
 
+public:
 	//Matrices - Coordinate spaces
 	Mtx view, model, modelview;
 	Mtx44 projection;
-	guVector camera, up, look;
+	guVector camPt, up, origin;
 	float pitch, yaw;
 
+public:
+	//Temp Rotation variable
+	u32 rot;
+
+public:
 	//Models
 	// std::vector<Mesh> m_meshes;
 
+public:
 	//Lighting
 	GXColor lightColor[2];
 	GXColor background;
 
+public:
 	// //Textures
 	// TPLFile m_paletteTPL;
-
-public:
-	void SetLight();
-
-public:
-	//Called at the end of each frame
-	void EndFrame();
 };
