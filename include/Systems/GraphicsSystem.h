@@ -3,12 +3,21 @@
 //Inherited class
 #include "SystemBase.h"
 
+#include <vector>
 #include <gccore.h>
 #include <string>
 #include <malloc.h>
 
 #define FRAMEBUFFER_SIZE 2
 #define DEFAULT_FIFO_SIZE (1024 * 1024)
+
+struct Mesh
+{
+	std::string name;
+	std::vector<guVector> vertices;
+	std::vector<guVector> uvs;
+	std::vector<guVector> normals;
+};
 
 class GraphicsSystem : public SystemBase
 {
@@ -62,8 +71,8 @@ public:
 	u32 rot;
 
 public:
-	//Models
-	// std::vector<Mesh> m_meshes;
+	//All Meshes that should be displayed
+	std::vector<Mesh> meshCollection;
 
 public:
 	//Lighting

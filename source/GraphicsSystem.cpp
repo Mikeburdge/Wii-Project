@@ -1,10 +1,13 @@
 #include "Systems/GraphicsSystem.h"
 
-//fmemopen
+//LoadMeshFromObj
 #include <stdio.h>
-
-
 #include <vector>
+
+//Models To Load
+#include "Beagle_obj.h"
+#include "pool_ball_white_obj.h"
+
 #include <string.h>
 #include "ogc/gu.h"
 
@@ -21,6 +24,13 @@ GraphicsSystem::GraphicsSystem()
 	lightColor[1] = {150, 150, 150, 255};
 
 	background = {80, 80, 255, 0};
+
+	//Models to include in the game
+
+	if (!LoadMeshFromObj("Beagle_obj", (void *)Beagle_obj, Beagle_obj_size))
+		exit(0);
+	if (!LoadMeshFromObj("pool_ball_white_obj", (void *)pool_ball_white_obj, pool_ball_white_obj_size))
+		exit(0);
 
 	//Initialises the video
 	InitGXVideo();
@@ -46,7 +56,6 @@ void GraphicsSystem::Init() {}
 
 void GraphicsSystem::Update(float deltaTime)
 {
-
 	//Create a viewing matrix
 	guLookAt(view, &camPt, &up, &origin);
 
@@ -119,6 +128,11 @@ void GraphicsSystem::InitGXVideo()
 	GX_CopyDisp(videoFrameBuffer[videoFrameBufferIndex], GX_TRUE);
 	GX_SetDispCopyGamma(GX_GM_1_0);
 
+	//My models are drawn to this index
+	GX_SetVtxAttrFmt(GX_VTXFMT1, GX_VA_POS, GX_POS_XYZ, GX_F32, 0);
+	GX_SetVtxAttrFmt(GX_VTXFMT1, GX_VA_NRM, GX_NRM_XYZ, GX_F32, 0);
+	GX_SetVtxAttrFmt(GX_VTXFMT1, GX_VA_TEX0, GX_TEX_ST, GX_F32, 0);
+
 	// set number of rasterized color channels
 	GX_SetNumChans(1);
 
@@ -128,6 +142,11 @@ void GraphicsSystem::InitGXVideo()
 	//Invalidates the vertex cache and current texture memory cache
 	GX_InvVtxCache();
 	GX_InvalidateTexAll();
+
+	//Setup TEV (Texture Environment) Stage
+	GX_SetTevOp(GX_TEVSTAGE0, GX_MODULATE);
+	GX_SetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR0A0);
+	GX_SetTexCoordGen(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, GX_IDENTITY);
 }
 
 void GraphicsSystem::CameraInit(void)
@@ -164,21 +183,99 @@ void GraphicsSystem::SetLight()
 	GX_SetChanAmbColor(GX_COLOR0A0, lightColor[1]);
 }
 
-bool LoadMeshFromObj(string name, void *fileStream, unsigned int fileSize)
+bool GraphicsSystem::LoadMeshFromObj(string name, void *fileStream, unsigned int fileSize)
 {
 
 	//Temp variables to store obj
 	vector<unsigned int> vertexIndices, uvIndices, normalIndices;
-	vector<guVector> vertices;
-	vector<guVector> uvs;
-	vector<guVector> normals;
+	vector<guVector> temp_vertices;
+	vector<guVector> temp_uvs;
+	vector<guVector> temp_normals;
 
 	FILE *file = fmemopen(fileStream, fileSize, "r");
+
 	if (file == NULL)
 	{
-		printf("Impossible to open the file !\n");
+		printf("Impossible to open the file !\n"); //todo maybe remove this line if its not doing anything
 		return false;
 	}
+
+	while (1)
+	{
+		//its silly to assume the first world of a line wont be longer than 128
+		char lineHeader[128];
+
+		// read the first word of the line
+		int res = fscanf(file, "%s", lineHeader);
+		if (res == EOF)
+			break; // EOF = End Of File. Quit the loop.
+
+		// else : parse lineHeader
+
+		if (strcmp(lineHeader, "v") == 0)
+		{
+			guVector vertex;
+			fscanf(file, "%f %f %f\n", &vertex.x, &vertex.y, &vertex.z);
+			temp_vertices.push_back(vertex);
+		}
+		else if (strcmp(lineHeader, "vt") == 0)
+		{
+			guVector uv;
+			fscanf(file, "%f %f\n", &uv.x, &uv.y);
+			temp_uvs.push_back(uv);
+		}
+		else if (strcmp(lineHeader, "vn") == 0)
+		{
+			guVector normal;
+			fscanf(file, "%f %f %f\n", &normal.x, &normal.y, &normal.z);
+			temp_normals.push_back(normal);
+		}
+		else if (strcmp(lineHeader, "f") == 0)
+		{
+			unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];
+			int matches = fscanf(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n",
+								 &vertexIndex[0], &uvIndex[0], &normalIndex[0],
+								 &vertexIndex[1], &uvIndex[1], &normalIndex[1],
+								 &vertexIndex[2], &uvIndex[2], &normalIndex[2]);
+
+			if (matches != 9)
+			{
+				printf("File can't be read by our simple parser : ( Try exporting with other options\n");
+				return false;
+			}
+			vertexIndices.push_back(vertexIndex[0]);
+			vertexIndices.push_back(vertexIndex[1]);
+			vertexIndices.push_back(vertexIndex[2]);
+			uvIndices.push_back(uvIndex[0]);
+			uvIndices.push_back(uvIndex[1]);
+			uvIndices.push_back(uvIndex[2]);
+			normalIndices.push_back(normalIndex[0]);
+			normalIndices.push_back(normalIndex[1]);
+			normalIndices.push_back(normalIndex[2]);
+		}
+	}
+	Mesh mesh;
+	mesh.name = name;
+
+	// For each vertex of each triangle
+	for (unsigned int i = 0; i < vertexIndices.size(); i++)
+	{
+		unsigned int vertexIndex = vertexIndices[i];
+		unsigned int uvIndex = uvIndices[i];
+		unsigned int normalIndex = normalIndices[i];
+
+		guVector vertex = temp_vertices[vertexIndex - 1];
+		guVector uv = temp_uvs[uvIndex - 1];
+		guVector normal = temp_normals[normalIndex - 1];
+
+		mesh.vertices.push_back(vertex);
+		mesh.uvs.push_back(uv);
+		mesh.normals.push_back(normal);
+	}
+
+	meshCollection.push_back(mesh);
+
+	return true;
 }
 
 void GraphicsSystem::EndFrame()

@@ -18,7 +18,7 @@ include $(DEVKITPPC)/wii_rules
 TARGET		:=	$(notdir $(CURDIR))
 BUILD		:=	build
 SOURCES		:=	source
-DATA		:=	data
+DATA		:=	ObjFiles
 INCLUDES	:=	include
 TEXTURES	:=	textures
 
@@ -141,6 +141,15 @@ $(OFILES_SOURCES) : $(HFILES)
 
 
 -include $(DEPSDIR)/*.d
+
+#---------------------------------------------------------------------------------
+# This rule links in binary data with the .obj extension
+#---------------------------------------------------------------------------------
+%.obj.o	%_obj.h :	%.obj
+#---------------------------------------------------------------------------------
+	@echo $(notdir $<)
+	@$(bin2o)
+
 
 #---------------------------------------------------------------------------------
 endif
