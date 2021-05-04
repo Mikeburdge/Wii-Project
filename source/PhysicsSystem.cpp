@@ -1,6 +1,6 @@
 #include "Systems/PhysicsSystem.h" //Always place corresponding .h first
 
-#include "Statics/Statics.h"
+#include "Utility/Statics.h"
 
 #include <iostream>
 

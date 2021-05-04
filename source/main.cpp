@@ -16,7 +16,7 @@
 #include <iostream>
 
 //Debugging
-#include "Statics/Statics.h"
+#include "Utility/Statics.h"
 
 class SceneID;
 
