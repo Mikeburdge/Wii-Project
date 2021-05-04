@@ -52,5 +52,22 @@ void EntitySystem::AddObject(GameObject *inOBJ)
 template <class T>
 T *EntitySystem::GetComponentList()
 {
+	vector<T *> templateList;
+
+	for (u16 i = 0; i < FullGameObjectList.size(); i++)
+	{
+		GameObject *currentObject = FullGameObjectList[i];
+
+		for (u16 j = 0; j < currentObject->subComponents.size(); j++)
+		{
+			T *tempComp = dynamic_cast<T *>(currentObject->subComponents[j]);
+
+			if (tempComp && !tempComp->isDisabled)
+			{
+				templateList.push_back(tempComp);
+			}
+		}
+	}
+
 	return nullptr;
 }
