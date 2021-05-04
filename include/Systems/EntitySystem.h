@@ -3,7 +3,10 @@
 #include "SystemBase.h"
 #include "Entity.h"
 
+#include "Components/GameObject.h"
+
 #include "SceneID.h"
+
 //Forward Declare SceneID
 class SceneID;
 
@@ -24,5 +27,7 @@ public:
     virtual void Update(float deltaTime); 
 
     void LoadScene(SceneID::SceneName InScene);
+
+    void AddObject(GameObject * OBJ);
 
 };
