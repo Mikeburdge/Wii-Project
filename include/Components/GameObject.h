@@ -13,13 +13,13 @@ class Component;
 class GameObject
 {
 public:
-    GameObject(std::string objectName = "Default GameObject", guVector position = {0, 0, 0}, guQuaternion rotation = Maff::QuaternionIdentity, guVector scale = Maff::VectorOne);
+    GameObject(std::string objectName = "Default GameObject", guVector position = Maff::VectorZero, guQuaternion rotation = Maff::QuaternionIdentity, guVector scale = Maff::VectorOne);
 
     ~GameObject();
 
     void AddComponent(Component *inComp);
 
-/**
+    /**
  * @brief Use this to find a component within the gameobjects @see subComponents
  * 
  * @note This will always return the first component of type T found
