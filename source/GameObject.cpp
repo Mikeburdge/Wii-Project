@@ -20,7 +20,7 @@ void GameObject::AddComponent(Component *inComp)
 
 //use template class to allow for any future components
 template <class T>
-T GameObject::FindComponent(T compToFind)
+T* GameObject::FindComponent()
 {
     //loop through all sub components
     for (u16 i = 0; i < subComponents.size(); i++)

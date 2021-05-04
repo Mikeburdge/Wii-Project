@@ -24,12 +24,11 @@ public:
  * 
  * @note This will always return the first component of type T found
  * 
- * @tparam T 
- * @param compToFind The class in which the function searches for
+ * @tparam T The class in which the function searches for
  * @return T If successful returns a class of type T, if unsuccessful returns nullptr
  */
     template <class T>
-    T FindComponent(T compToFind);
+    T* FindComponent();
 
     std::vector<Component *> subComponents;
 };
