@@ -6,7 +6,7 @@ GameObject::GameObject(std::string objectName, guVector position, guQuaternion r
 
 GameObject::~GameObject()
 {
-    for (Component *comp : subComponents)
+    for (Component * comp : subComponents)
     {
         delete comp;
     }

@@ -7,8 +7,9 @@
 
 #include "SceneID.h"
 
-//Forward Declare SceneID
+//Forward Declarations
 class SceneID;
+
 
 class EntitySystem : public SystemBase
 {
