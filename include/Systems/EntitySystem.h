@@ -7,28 +7,32 @@
 
 #include "SceneID.h"
 
+using namespace std;
+
 //Forward Declarations
 class SceneID;
-
 
 class EntitySystem : public SystemBase
 {
 public:
-
-    static EntitySystem* myInstance;
+    static EntitySystem *myInstance;
 
     EntitySystem();
 
-    static EntitySystem* GetInstance();
+    static EntitySystem *GetInstance();
 
     ~EntitySystem();
 
     virtual void Init();
 
-    virtual void Update(float deltaTime); 
+    virtual void Update(float deltaTime);
 
     void LoadScene(SceneID::SceneName InScene);
 
-    void AddObject(GameObject * OBJ);
+    void AddObject(GameObject *OBJ);
 
+    template <class T>
+    T* GetComponentList();
+
+    vector<GameObject *> FullGameObjectList;
 };

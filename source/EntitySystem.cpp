@@ -1,7 +1,5 @@
 #include "Systems/EntitySystem.h"
 
-using namespace std;
-
 EntitySystem::EntitySystem() {}
 
 EntitySystem::~EntitySystem() {}
@@ -37,10 +35,22 @@ void EntitySystem::LoadScene(SceneID::SceneName InScene)
 		GameObject *coolDog = new GameObject("CoolDog", Maff::VectorZero, Maff::QuaternionIdentity, Maff::VectorOne);
 
 		AddObject(coolDog);
+
+		break;
 	}
-	break;
 
 	default:
 		break;
 	}
+}
+
+void EntitySystem::AddObject(GameObject *inOBJ)
+{
+	FullGameObjectList.push_back(inOBJ);
+}
+
+template <class T>
+T *EntitySystem::GetComponentList()
+{
+	return nullptr;
 }
