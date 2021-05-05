@@ -5,7 +5,7 @@
 #include "Utility/Maff.h"
 #include "ogc/gu.h"
 
-class TransformComponent
+class TransformComponent : public Component
 {
 public:
     TransformComponent(guVector position = Maff::VectorZero, guQuaternion rotation = Maff::QuaternionIdentity, guVector scale = Maff::VectorOne);

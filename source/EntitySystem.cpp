@@ -22,19 +22,23 @@ void EntitySystem::Update(float deltaTime)
 {
 }
 
-void EntitySystem::LoadScene(SceneID::SceneName InScene)
+void EntitySystem::LoadScene(SceneName InScene)
 {
 	switch (InScene)
 	{
-	case SceneID::SceneName::Starting:
+	case SceneName::Starting:
 		/* code */
 		break;
 
-	case SceneID::SceneName::Testing:
+	case SceneName::Testing:
 	{
 		GameObject *coolDog = new GameObject("CoolDog", Maff::VectorZero, Maff::QuaternionIdentity, Maff::VectorOne);
+		coolDog->AddComponent(new MeshComponent("cooldog"));
 
 		AddObject(coolDog);
+
+		GameObject *whiteBall = new GameObject("WhiteBall", {0, 1, 0}, Maff::QuaternionIdentity, Maff::VectorOne);
+		whiteBall->AddComponent(new MeshComponent("whiteball"));
 
 		break;
 	}
@@ -50,24 +54,48 @@ void EntitySystem::AddObject(GameObject *inOBJ)
 }
 
 template <class T>
-T *EntitySystem::GetComponentList()
+vector<T *> EntitySystem::GetComponentList()
 {
-	vector<T *> templateList;
+	vector<T *> compList;
 
 	for (u16 i = 0; i < FullGameObjectList.size(); i++)
 	{
 		GameObject *currentObject = FullGameObjectList[i];
 
-		for (u16 j = 0; j < currentObject->subComponents.size(); j++)
+		for (u16 j = 0; j < currentObject->SubComponents.size(); j++)
 		{
-			T *tempComp = dynamic_cast<T *>(currentObject->subComponents[j]);
+			T *tempComp = dynamic_cast<T *>(currentObject->SubComponents[j]);
 
 			if (tempComp && !tempComp->isDisabled)
 			{
-				templateList.push_back(tempComp);
+				compList.push_back(tempComp);
 			}
 		}
 	}
 
 	return nullptr;
+}
+
+//Model meshes
+std::vector<MeshComponent *> EntitySystem::GetMeshComponentList()
+{
+	//Iterate through gameobjects, find MeshComponents through i.e dynamic_casts
+	//Add pointers to such meshcomponents to the vector, return such vector
+	std::vector<MeshComponent *> meshCompList;
+	//@Beware of vectors dynamically moving instances in memory
+	for (u16 i = 0; i < FullGameObjectList.size(); i++)
+	{
+		GameObject *curObj = FullGameObjectList[i];
+		//Find mesh components
+		for (u16 j = 0; j < curObj->SubComponents.size(); j++)
+		{
+			//Dynamic casting to identify type;
+			MeshComponent *meshComp = dynamic_cast<MeshComponent *>(curObj->SubComponents[j]);
+			if (meshComp && !meshComp->isDisabled)
+			{
+				meshCompList.push_back(meshComp);
+			}
+		}
+	}
+	return meshCompList;
 }

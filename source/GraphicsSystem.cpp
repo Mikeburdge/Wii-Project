@@ -1,5 +1,9 @@
 #include "Systems/GraphicsSystem.h"
 
+#include "Systems/EntitySystem.h"
+
+#include "Components/TransformComponent.h"
+
 //LoadMeshFromObj
 #include <stdio.h>
 #include <vector>
@@ -61,6 +65,11 @@ void GraphicsSystem::Update(float deltaTime)
 
 	//Update Lighting
 	SetLight();
+
+	EntitySystem *sysEntity = EntitySystem::GetInstance();
+
+	//Draw
+	// DrawMeshes(sysEntity->GetMeshComponentList());
 
 	//Call last each frame
 	EndFrame();
@@ -276,6 +285,50 @@ bool GraphicsSystem::LoadMeshFromObj(string name, void *fileStream, unsigned int
 	meshCollection.push_back(mesh);
 
 	return true;
+}
+
+void GraphicsSystem::DrawMeshes(vector<MeshComponent *> meshes)
+{
+	//ill leave textures for now
+
+	GX_ClearVtxDesc();
+	GX_SetVtxDesc(GX_VA_POS, GX_DIRECT);
+	GX_SetVtxDesc(GX_VA_NRM, GX_DIRECT);
+	GX_SetVtxDesc(GX_VA_TEX0, GX_DIRECT);
+
+	for (u16 i = 0; i < meshes.size(); i++)
+	{
+		MeshComponent *currentMesh = meshes[i];
+		TransformComponent meshObjectTransform = currentMesh->Owner->Transform;
+
+		//unless you know what you're doing always Scale, Rotate then Translate
+		guMtxIdentity(model);
+		guMtxScaleApply(model, model, meshObjectTransform.Scale.x, meshObjectTransform.Scale.y, meshObjectTransform.Scale.z);
+
+		Mtx tempRotMtx;
+		c_guMtxQuat(tempRotMtx, &meshObjectTransform.Rotation);
+
+		guMtxConcat(model, tempRotMtx, model);
+
+		guMtxTransApply(model, model, meshObjectTransform.Position.x, meshObjectTransform.Position.y, meshObjectTransform.Position.z);
+		guMtxConcat(view, model, modelview);
+
+		GX_LoadPosMtxImm(modelview, GX_PNMTX0);
+		GX_LoadNrmMtxImm(modelview, GX_PNMTX0);
+
+		GX_Begin(GX_TRIANGLES, GX_VTXFMT1, currentMesh->Vertices.size());
+		for (unsigned int i = 0; i < currentMesh->Vertices.size(); i++)
+		{
+			guVector vertex = currentMesh->Vertices[i];
+			guVector uvs = currentMesh->UVs[i];
+			guVector normals = currentMesh->Normals[i];
+
+			GX_Position3f32(vertex.x, vertex.y, vertex.z);
+			GX_TexCoord2f32(uvs.x, uvs.y);
+			GX_Normal3f32(normals.x, normals.y, normals.z);
+		}
+		GX_End();
+	}
 }
 
 void GraphicsSystem::EndFrame()

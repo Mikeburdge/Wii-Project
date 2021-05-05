@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Components/GameObject.h"
-
 //Forward Declarations
 class GameObject;
 
@@ -10,9 +8,9 @@ class Component
 private:
     /* data */
 public:
-    Component();
-    ~Component();
+    Component(){};
+    virtual ~Component(){};
 
-    GameObject *owner;
+    GameObject *Owner;
     bool isDisabled = false;
 };

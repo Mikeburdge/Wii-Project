@@ -5,12 +5,12 @@
 
 #include "Components/GameObject.h"
 
+#include "Components/MeshComponent.h"
+
 #include "SceneID.h"
 
 using namespace std;
 
-//Forward Declarations
-class SceneID;
 
 class EntitySystem : public SystemBase
 {
@@ -27,12 +27,14 @@ public:
 
     virtual void Update(float deltaTime);
 
-    void LoadScene(SceneID::SceneName InScene);
+    void LoadScene(SceneName InScene);
 
     void AddObject(GameObject *OBJ);
 
     template <class T>
-    T* GetComponentList();
+    vector<T*> GetComponentList();	
+    
+    std::vector< MeshComponent * > GetMeshComponentList();
 
     vector<GameObject *> FullGameObjectList;
 };

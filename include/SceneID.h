@@ -1,17 +1,7 @@
 #pragma once
 
-class SceneID
+enum SceneName
 {
-public:
-
-    SceneID(){};
-    ~SceneID(){};
-
-    enum SceneName{ 
-    Starting, 
-    Testing, 
-    };
-    
+    Starting,
+    Testing,
 };
-
-

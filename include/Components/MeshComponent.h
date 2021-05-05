@@ -2,6 +2,8 @@
 
 #include "Components/Component.h"
 #include <string>
+#include <vector>
+#include "ogc/gu.h"
 
 using namespace std;
 

@@ -59,9 +59,8 @@ int main(int argc, char **argv)
   //AI
   AISystem *SysAI = AISystem::GetInstance();
 
-
   //Load the first scene we want to see
-  SysEntity->LoadScene(SceneID::SceneName::Testing);
+  SysEntity->LoadScene(SceneName::Testing);
 
   while (true)
   {
