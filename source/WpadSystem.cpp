@@ -42,7 +42,8 @@ void WPadSystem::Init() {}
 
 void WPadSystem::Update(float deltaTime)
 {
-
+    ScanPad(0);
+    
     vector<RigidbodyComponent *> rigidbodies = EntitySystem::GetInstance()->GetRigidbodyComponentList();
 
     for (unsigned int i = 0; i < rigidbodies.size(); i++)
@@ -52,41 +53,36 @@ void WPadSystem::Update(float deltaTime)
 
         if (wButtonsHeld & WPAD_BUTTON_LEFT)
         {
-            transformComp->Position.x -= 1 * deltaTime;
+            transformComp->Position.x -= 100 * deltaTime;
         }
         if (wButtonsDown & WPAD_BUTTON_LEFT)
         {
-            transformComp->Position.x -= 1 * deltaTime;
+            transformComp->Position.x -= 100 * deltaTime;
         }
         if (wButtonsHeld & WPAD_BUTTON_RIGHT)
         {
-            transformComp->Position.x += 1 * deltaTime;
+            transformComp->Position.x += 100 * deltaTime;
         }
         if (wButtonsDown & WPAD_BUTTON_RIGHT)
         {
-            transformComp->Position.x += 1 * deltaTime;
+            transformComp->Position.x += 100 * deltaTime;
         }
         if (wButtonsHeld & WPAD_BUTTON_UP)
         {
-            transformComp->Position.y += 1 * deltaTime;
+            transformComp->Position.y += 100 * deltaTime;
         }
         if (wButtonsDown & WPAD_BUTTON_UP)
         {
-            transformComp->Position.y += 1 * deltaTime;
+            transformComp->Position.y += 100 * deltaTime;
         }
         if (wButtonsHeld & WPAD_BUTTON_DOWN)
         {
-            transformComp->Position.y -= 1 * deltaTime;
+            transformComp->Position.y -= 100 * deltaTime;
         }
         if (wButtonsDown & WPAD_BUTTON_DOWN)
         {
-            transformComp->Position.y -= 1 * deltaTime;
+            transformComp->Position.y -= 100 * deltaTime;
         }
-    }
-    //check if buttons are down
-    u32 pressed = WPAD_ButtonsDown(0);
-    if (pressed)
-    {
     }
 
     // IR Movement
@@ -97,9 +93,6 @@ void WPadSystem::ScanPad(int PadNumber)
 {
     WPAD_ScanPads();
     data = *WPAD_Data(0);
-    buttonsHeld = PAD_ButtonsHeld(PadNumber);
-    buttonsDown = PAD_ButtonsDown(PadNumber);
-    buttonsUp = PAD_ButtonsUp(PadNumber);
     wButtonsHeld = data.btns_h;
     wButtonsDown = data.btns_d;
     wButtonsUp = data.btns_u;
