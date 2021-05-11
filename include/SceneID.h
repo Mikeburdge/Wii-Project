@@ -4,4 +4,5 @@ enum SceneName
 {
     Starting,
     Testing,
+    Testing2ElectricBoogaloo
 };

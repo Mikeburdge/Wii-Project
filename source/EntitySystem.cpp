@@ -4,7 +4,6 @@
 #include "Systems/PhysicsSystem.h"
 #include "Systems/GraphicsSystem.h"
 
-#include "Components/GameObject.h"
 #include "Components/RigidbodyComponent.h"
 
 EntitySystem::EntitySystem() {}
@@ -53,15 +52,15 @@ void EntitySystem::LoadScene(SceneName InScene)
 		sysGraphics->yaw = 0;
 		sysGraphics->pitch = 0;
 
-		GameObject *whiteBall = new GameObject();
+		GameObject *whiteBall = new GameObject("WhiteBall", guVector{10, 0, 0});
 		whiteBall->AddComponent(new MeshComponent("WhiteBallMesh"));
 		whiteBall->AddComponent(new RigidbodyComponent(0.5f, 1.0f, false, false));
 		AddObject(whiteBall);
 
-		// GameObject *whiteBall2 = new GameObject("WhiteBall", guVector{1, 0, 0});
-		// whiteBall2->AddComponent(new MeshComponent("DogMesh"));
-		// whiteBall2->AddComponent(new RigidbodyComponent(0.5f, 1.0f, false, false));
-		// AddObject(whiteBall2);
+		GameObject *whiteBall2 = new GameObject("WhiteBall2", guVector{-10, 0, 0});
+		whiteBall2->AddComponent(new MeshComponent("WhiteBallMesh"));
+		whiteBall2->AddComponent(new RigidbodyComponent(0.5f, 1.0f, false, false));
+		AddObject(whiteBall2);
 
 		// GameObject *DogOnlineConverter = new GameObject("DogOnlineConverter", guVector{1, 0, 0});
 		// DogOnlineConverter->AddComponent(new MeshComponent("DogOnlineConverterMesh"));
@@ -79,19 +78,15 @@ void EntitySystem::LoadScene(SceneName InScene)
 
 		// AddObject(GreenGoblinMask);
 
-		// GameObject *dog = new GameObject("DogObject", {1, 0, 0}, Maff::QuaternionIdentity, Maff::VectorOne);
-		// dog->AddComponent(new MeshComponent("DogMesh"));
-		// AddObject(dog);
+		break;
+	}
 
-		// GameObject *lowpolydog = new GameObject("lowpolydog", {1, 0, 0}, Maff::QuaternionIdentity, Maff::VectorOne);
-		// lowpolydog->AddComponent(new MeshComponent("LowPolyDog"));
-		// AddObject(lowpolydog);
+	case SceneName::Testing2ElectricBoogaloo:
+	{
 
-		// GameObject *ball = new GameObject("BallRed", guVector{0, 0, 0}, Maff::QuaternionIdentity, guVector{0.15f, 0.15f, 0.15f});
-		// ball->AddComponent(new MeshComponent("pool_ball_red"));
-		// ball->AddComponent(new RigidbodyComponent());
-
-		// AddObject(ball);
+		GameObject *dog = new GameObject("BigDog", {0, 0, 0}, Maff::QuaternionIdentity, Maff::VectorOne);
+		dog->AddComponent(new MeshComponent("DogMesh"));
+		AddObject(dog);
 
 		break;
 	}
@@ -119,6 +114,19 @@ void EntitySystem::ClearAllObjects()
 		delete obj;
 
 	FullGameObjectList.clear();
+}
+
+GameObject *EntitySystem::FindObjectByName(string name)
+{
+	GameObject *returnedObj = nullptr;
+	for (u16 i = 0; i < FullGameObjectList.size(); i++)
+	{
+		if (FullGameObjectList[i]->Name.compare(name) == 0)
+		{
+			returnedObj = FullGameObjectList[i];
+		}
+	}
+	return returnedObj;
 }
 
 std::vector<MeshComponent *> EntitySystem::GetMeshComponentList()

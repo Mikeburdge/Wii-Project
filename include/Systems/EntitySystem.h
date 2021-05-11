@@ -4,12 +4,12 @@
 #include "Entity.h"
 
 // #include "Components/MeshComponent.h"
+#include "Components/GameObject.h"
 
 #include "SceneID.h"
 #include <vector>
 
 //Forward Declarations
-class GameObject;
 class MeshComponent;
 class RigidbodyComponent;
 
@@ -39,6 +39,8 @@ public:
     vector<MeshComponent *> GetMeshComponentList();
 
     vector<RigidbodyComponent *> GetRigidbodyComponentList();
+
+    GameObject *FindObjectByName(string name);
 
     vector<GameObject *> FullGameObjectList;
 };
