@@ -57,11 +57,11 @@ void EntitySystem::LoadScene(SceneName InScene)
 		// coolDog->AddComponent(new MeshComponent("Beagle"));
 		// AddObject(coolDog);
 
-		GameObject *whiteBall = new GameObject("WhiteBall", {0, 0, 0}, Maff::QuaternionIdentity, guVector{0.15f, 0.15f, 0.15f});
-		whiteBall->AddComponent(new MeshComponent("pool_ball_white"));
-		whiteBall->AddComponent(new RigidbodyComponent());
+		// GameObject *whiteBall = new GameObject("WhiteBall", {0, 0, 0}, Maff::QuaternionIdentity, Maff::VectorOne);
+		// whiteBall->AddComponent(new MeshComponent("pool_ball_white"));
+		// whiteBall->AddComponent(new RigidbodyComponent(0.5f, 1.0f, false, false));
 
-		AddObject(whiteBall);
+		// AddObject(whiteBall);
 
 		// GameObject *dog = new GameObject("Dog", {1, 0, 0}, Maff::QuaternionIdentity, Maff::VectorOne);
 		// dog->AddComponent(new MeshComponent("Dog"));
@@ -71,25 +71,26 @@ void EntitySystem::LoadScene(SceneName InScene)
 		// lowpolydog->AddComponent(new MeshComponent("LowPolyDog"));
 		// AddObject(lowpolydog);
 
-		GameObject *ball = new GameObject("BallRed", guVector{0, 0, 0}, Maff::QuaternionIdentity, guVector{0.15f, 0.15f, 0.15f});
-		ball->AddComponent(new MeshComponent("pool_ball_red"));
+		// GameObject *ball = new GameObject("BallRed", guVector{0, 0, 0}, Maff::QuaternionIdentity, guVector{0.15f, 0.15f, 0.15f});
+		// ball->AddComponent(new MeshComponent("pool_ball_red"));
+		// ball->AddComponent(new RigidbodyComponent());
 
-		AddObject(ball);
+		// AddObject(ball);
 
-		GameObject *ball2 = new GameObject("BallBlue", guVector{1, 0, 0}, Maff::QuaternionIdentity, guVector{0.15f, 0.15f, 0.15f});
-		ball2->AddComponent(new MeshComponent("pool_ball_blue"));
+		// GameObject *ball2 = new GameObject("BallBlue", guVector{1, 0, 0}, Maff::QuaternionIdentity, guVector{0.15f, 0.15f, 0.15f});
+		// ball2->AddComponent(new MeshComponent("pool_ball_blue"));
 
-		AddObject(ball2);
+		// AddObject(ball2);
 
 		GameObject *ball4 = new GameObject("BallRed2", guVector{1, 1, 0}, guQuaternion{0, 1, 1, 0}, guVector{0.15f, 0.15f, 0.15f});
 		ball4->AddComponent(new MeshComponent("pool_ball_red"));
 
 		AddObject(ball4);
 
-		GameObject *ball5 = new GameObject("BallBlue2", guVector{6, -1.0, 0}, Maff::QuaternionIdentity, guVector{0.15f, 0.15f, 0.15f});
-		ball5->AddComponent(new MeshComponent("pool_ball_blue"));
+		// GameObject *ball5 = new GameObject("BallBlue2", guVector{6, -1.0, 0}, Maff::QuaternionIdentity, guVector{0.15f, 0.15f, 0.15f});
+		// ball5->AddComponent(new MeshComponent("pool_ball_blue"));
 
-		AddObject(ball5);
+		// AddObject(ball5);
 
 		break;
 	}

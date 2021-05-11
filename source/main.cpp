@@ -53,7 +53,7 @@ int main(int argc, char **argv)
   //Physics
   PhysicsSystem *SysPhysics = PhysicsSystem::GetInstance();
   //AI
-  AISystem *SysAI = AISystem::GetInstance();
+  // AISystem *SysAI = AISystem::GetInstance();
 
   //Load the first scene we want to see
   SysEntity->LoadScene(SceneName::Testing);
@@ -77,14 +77,14 @@ int main(int argc, char **argv)
     SysGraphics->Update(deltaTime);
     SysWPAD->Update(deltaTime);
     SysPhysics->Update(deltaTime);
-    SysAI->Update(deltaTime);
+    // SysAI->Update(deltaTime);
     SysEntity->Update(deltaTime);
   }
 
   delete SysGraphics;
   delete SysWPAD;
   delete SysPhysics;
-  delete SysAI;
+  // delete SysAI;
   delete SysEntity;
 
   return 0;

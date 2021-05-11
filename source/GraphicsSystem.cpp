@@ -46,13 +46,13 @@ GraphicsSystem::GraphicsSystem()
 	pitch = 0;
 	yaw = 0;
 
-	videoFrameBufferIndex = 0;
 
 	lightColor[0] = {255, 255, 255, 255};
 	lightColor[1] = {150, 150, 150, 255};
 
 	background = {80, 80, 255, 0};
 
+	videoFrameBufferIndex = 0;
 	//Models to include in the game
 
 	// if (!LoadMeshFromObj("Beagle_obj", (void *)Beagle_obj, Beagle_obj_size))
