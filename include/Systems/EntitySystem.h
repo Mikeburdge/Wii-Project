@@ -3,14 +3,17 @@
 #include "SystemBase.h"
 #include "Entity.h"
 
-#include "Components/GameObject.h"
-
-#include "Components/MeshComponent.h"
+// #include "Components/MeshComponent.h"
 
 #include "SceneID.h"
+#include <vector>
+
+//Forward Declarations
+class GameObject;
+class MeshComponent;
+class RigidbodyComponent;
 
 using namespace std;
-
 
 class EntitySystem : public SystemBase
 {
@@ -31,10 +34,11 @@ public:
 
     void AddObject(GameObject *OBJ);
 
-    template <class T>
-    vector<T*> GetComponentList();	
-    
-    std::vector< MeshComponent * > GetMeshComponentList();
+    void ClearAllObjects();
+
+    vector<MeshComponent *> GetMeshComponentList();
+
+    vector<RigidbodyComponent *> GetRigidbodyComponentList();
 
     vector<GameObject *> FullGameObjectList;
 };

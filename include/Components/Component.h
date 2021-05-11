@@ -5,8 +5,6 @@ class GameObject;
 
 class Component
 {
-private:
-    /* data */
 public:
     Component(){};
     virtual ~Component(){};

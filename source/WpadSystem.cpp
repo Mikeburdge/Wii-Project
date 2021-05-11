@@ -4,6 +4,13 @@
 
 //get viewport size
 #include "Systems/GraphicsSystem.h"
+#include "Systems/EntitySystem.h"
+
+#include "Components/GameObject.h"
+#include "Components/TransformComponent.h"
+#include "Components/RigidbodyComponent.h"
+
+#include <vector>
 
 using namespace std;
 
@@ -31,20 +38,80 @@ WPadSystem *WPadSystem::GetInstance()
     return myInstance;
 }
 
-void WPadSystem::Init()
-{
-}
+void WPadSystem::Init() {}
 
 void WPadSystem::Update(float deltaTime)
 {
 
+    vector<RigidbodyComponent *> rigidbodies = EntitySystem::GetInstance()->GetRigidbodyComponentList();
+
+    for (unsigned int i = 0; i < rigidbodies.size(); i++)
+    {
+        RigidbodyComponent *currentRigidbody = rigidbodies[i];
+        TransformComponent *transformComp = &currentRigidbody->Owner->Transform;
+
+        if (wButtonsHeld & WPAD_BUTTON_LEFT)
+        {
+            guVector direction = guVector{-1, 0, 0};
+            guVecAdd(&transformComp->Position, &direction, &transformComp->Position);
+        }
+        if (wButtonsDown & WPAD_BUTTON_LEFT)
+        {
+            guVector direction = guVector{-1, 0, 0};
+            guVecAdd(&transformComp->Position, &direction, &transformComp->Position);
+        }
+        if (wButtonsHeld & WPAD_BUTTON_RIGHT)
+        {
+            guVector direction = guVector{1, 0, 0};
+            guVecAdd(&transformComp->Position, &direction, &transformComp->Position);
+        }
+        if (wButtonsDown & WPAD_BUTTON_RIGHT)
+        {
+            guVector direction = guVector{1, 0, 0};
+            guVecAdd(&transformComp->Position, &direction, &transformComp->Position);
+        }
+        if (wButtonsHeld & WPAD_BUTTON_UP)
+        {
+            guVector direction = guVector{0, 1, 0};
+            guVecAdd(&transformComp->Position, &direction, &transformComp->Position);
+        }
+        if (wButtonsDown & WPAD_BUTTON_UP)
+        {
+            guVector direction = guVector{0, 1, 0};
+            guVecAdd(&transformComp->Position, &direction, &transformComp->Position);
+        }
+        if (wButtonsHeld & WPAD_BUTTON_DOWN)
+        {
+            guVector direction = guVector{0, -1, 0};
+            guVecAdd(&transformComp->Position, &direction, &transformComp->Position);
+        }
+        if (wButtonsDown & WPAD_BUTTON_DOWN)
+        {
+            guVector direction = guVector{0, -1, 0};
+            guVecAdd(&transformComp->Position, &direction, &transformComp->Position);
+        }
+
+        //check if buttons are down
+        u32 pressed = WPAD_ButtonsDown(0);
+        if (pressed)
+        {
+        }
+
+        // IR Movement
+        WPAD_IR(0, &ir);
+    }
+}
+
+void WPadSystem::ScanPad(int PadNumber)
+{
     WPAD_ScanPads();
-
-    //check if buttons are down
-    // u32 pressed = WPAD_ButtonsDown(0);
-
-    // IR Movement
-    WPAD_IR(0, &ir);
+    data = *WPAD_Data(0);
+    buttonsHeld = PAD_ButtonsHeld(PadNumber);
+    buttonsDown = PAD_ButtonsDown(PadNumber);
+    buttonsUp = PAD_ButtonsUp(PadNumber);
+    wButtonsHeld = data.btns_h;
+    wButtonsDown = data.btns_d;
+    wButtonsUp = data.btns_u;
 }
 
 WPadSystem::~WPadSystem() {}

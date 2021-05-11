@@ -4,6 +4,8 @@
 
 #include "SystemBase.h"
 
+class EntitySystem;
+
 class WPadSystem : public SystemBase
 {
 public:
@@ -20,9 +22,21 @@ public:
 
     ~WPadSystem();
 
+    void ScanPad(int PadNumber);
+
 public:
+
+
     // Wiimote Infrared Radiation
     ir_t ir;
+
+    WPADData data;
+    u16 buttonsHeld;
+    u16 buttonsDown;
+    u16 buttonsUp;
+    u16 wButtonsHeld;
+    u16 wButtonsDown;
+    u16 wButtonsUp;
 
 public:
     // MEM2 memory allocation routines. The application must provide these to

@@ -9,7 +9,7 @@
 #include <gctypes.h>
 
 //Not sure what this is actually doing, but gettime() and probably more fails without it
-#include <DevKitPro/ogc/lwp_watchdog.h>
+#include "ogc/lwp_watchdog.h"
 
 #include <ostream>
 #include <fstream>
@@ -35,25 +35,21 @@ u8 HIGH_LIMIT = 0.1f;   // Keep At/Above 10fps
  * @return Program exit status code.
  */
 int main(int argc, char **argv)
-{
-
-  Debug::Log("start of main");
-
-  //Initializes the VIDEO subsystem
-  VIDEO_Init();
-
-  float lastTime = gettime();
-
+{  
   //Calls Initial Functions (apparently, cant find anything what it is)
   __lwp_watchdog_init();
+
+  // Debug::Log("start of main");
+
+  float lastTime = gettime();
 
   //Singletons:
   //Entity
   EntitySystem *SysEntity = EntitySystem::GetInstance();
-  //Graphics
-  GraphicsSystem *SysGraphics = GraphicsSystem::GetInstance();
   //WPAD
   WPadSystem *SysWPAD = WPadSystem::GetInstance();
+  //Graphics
+  GraphicsSystem *SysGraphics = GraphicsSystem::GetInstance();
   //Physics
   PhysicsSystem *SysPhysics = PhysicsSystem::GetInstance();
   //AI

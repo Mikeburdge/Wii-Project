@@ -1,5 +1,12 @@
 #include "Systems/EntitySystem.h"
 
+#include "Systems/WPadSystem.h"
+#include "Systems/PhysicsSystem.h"
+#include "Systems/GraphicsSystem.h"
+
+#include "Components/GameObject.h"
+#include "Components/RigidbodyComponent.h"
+
 EntitySystem::EntitySystem() {}
 
 EntitySystem::~EntitySystem() {}
@@ -24,6 +31,12 @@ void EntitySystem::Update(float deltaTime)
 
 void EntitySystem::LoadScene(SceneName InScene)
 {
+	WPadSystem *sysWPad = WPadSystem::GetInstance();
+	PhysicsSystem *sysPhysics = PhysicsSystem::GetInstance();
+	GraphicsSystem *sysGraphics = GraphicsSystem::GetInstance();
+
+	ClearAllObjects();
+
 	switch (InScene)
 	{
 	case SceneName::Starting:
@@ -32,13 +45,51 @@ void EntitySystem::LoadScene(SceneName InScene)
 
 	case SceneName::Testing:
 	{
-		GameObject *coolDog = new GameObject("CoolDog", Maff::VectorZero, Maff::QuaternionIdentity, Maff::VectorOne);
-		coolDog->AddComponent(new MeshComponent("cooldog"));
+		//Re initiating the projection values
+		sysGraphics->camPt = {0.0F, 0.0F, 0.0F};
+		sysGraphics->up = {0.0F, 1.0F, 0.0F};
+		sysGraphics->origin = {0.0F, 0.0F, -1.0F};
 
-		AddObject(coolDog);
+		sysGraphics->yaw = 0;
+		sysGraphics->pitch = 0;
 
-		GameObject *whiteBall = new GameObject("WhiteBall", {0, 1, 0}, Maff::QuaternionIdentity, Maff::VectorOne);
-		whiteBall->AddComponent(new MeshComponent("whiteball"));
+		// GameObject *coolDog = new GameObject("CoolDog", Maff::VectorZero, Maff::QuaternionIdentity, Maff::VectorOne);
+		// coolDog->AddComponent(new MeshComponent("Beagle"));
+		// AddObject(coolDog);
+
+		GameObject *whiteBall = new GameObject("WhiteBall", {0, 0, 0}, Maff::QuaternionIdentity, guVector{0.15f, 0.15f, 0.15f});
+		whiteBall->AddComponent(new MeshComponent("pool_ball_white"));
+		whiteBall->AddComponent(new RigidbodyComponent());
+
+		AddObject(whiteBall);
+
+		// GameObject *dog = new GameObject("Dog", {1, 0, 0}, Maff::QuaternionIdentity, Maff::VectorOne);
+		// dog->AddComponent(new MeshComponent("Dog"));
+		// AddObject(dog);
+
+		// GameObject *lowpolydog = new GameObject("lowpolydog", {1, 0, 0}, Maff::QuaternionIdentity, Maff::VectorOne);
+		// lowpolydog->AddComponent(new MeshComponent("LowPolyDog"));
+		// AddObject(lowpolydog);
+
+		GameObject *ball = new GameObject("BallRed", guVector{0, 0, 0}, Maff::QuaternionIdentity, guVector{0.15f, 0.15f, 0.15f});
+		ball->AddComponent(new MeshComponent("pool_ball_red"));
+
+		AddObject(ball);
+
+		GameObject *ball2 = new GameObject("BallBlue", guVector{1, 0, 0}, Maff::QuaternionIdentity, guVector{0.15f, 0.15f, 0.15f});
+		ball2->AddComponent(new MeshComponent("pool_ball_blue"));
+
+		AddObject(ball2);
+
+		GameObject *ball4 = new GameObject("BallRed2", guVector{1, 1, 0}, guQuaternion{0, 1, 1, 0}, guVector{0.15f, 0.15f, 0.15f});
+		ball4->AddComponent(new MeshComponent("pool_ball_red"));
+
+		AddObject(ball4);
+
+		GameObject *ball5 = new GameObject("BallBlue2", guVector{6, -1.0, 0}, Maff::QuaternionIdentity, guVector{0.15f, 0.15f, 0.15f});
+		ball5->AddComponent(new MeshComponent("pool_ball_blue"));
+
+		AddObject(ball5);
 
 		break;
 	}
@@ -46,6 +97,13 @@ void EntitySystem::LoadScene(SceneName InScene)
 	default:
 		break;
 	}
+
+	//Reinitialise all systems after loading a new scene
+	//(unless i can think of something to put in the inits this is useless)
+	this->Init();
+	sysWPad->Init();
+	sysPhysics->Init();
+	sysGraphics->Init();
 }
 
 void EntitySystem::AddObject(GameObject *inOBJ)
@@ -53,10 +111,17 @@ void EntitySystem::AddObject(GameObject *inOBJ)
 	FullGameObjectList.push_back(inOBJ);
 }
 
-template <class T>
-vector<T *> EntitySystem::GetComponentList()
+void EntitySystem::ClearAllObjects()
 {
-	vector<T *> compList;
+	for (GameObject *obj : FullGameObjectList)
+		delete obj;
+
+	FullGameObjectList.clear();
+}
+
+std::vector<MeshComponent *> EntitySystem::GetMeshComponentList()
+{
+	std::vector<MeshComponent *> compList;
 
 	for (u16 i = 0; i < FullGameObjectList.size(); i++)
 	{
@@ -64,7 +129,7 @@ vector<T *> EntitySystem::GetComponentList()
 
 		for (u16 j = 0; j < currentObject->SubComponents.size(); j++)
 		{
-			T *tempComp = dynamic_cast<T *>(currentObject->SubComponents[j]);
+			MeshComponent *tempComp = dynamic_cast<MeshComponent *>(currentObject->SubComponents[j]);
 
 			if (tempComp && !tempComp->isDisabled)
 			{
@@ -73,29 +138,27 @@ vector<T *> EntitySystem::GetComponentList()
 		}
 	}
 
-	return nullptr;
+	return compList;
 }
 
-//Model meshes
-std::vector<MeshComponent *> EntitySystem::GetMeshComponentList()
+std::vector<RigidbodyComponent *> EntitySystem::GetRigidbodyComponentList()
 {
-	//Iterate through gameobjects, find MeshComponents through i.e dynamic_casts
-	//Add pointers to such meshcomponents to the vector, return such vector
-	std::vector<MeshComponent *> meshCompList;
-	//@Beware of vectors dynamically moving instances in memory
+	std::vector<RigidbodyComponent *> compList;
+
 	for (u16 i = 0; i < FullGameObjectList.size(); i++)
 	{
-		GameObject *curObj = FullGameObjectList[i];
-		//Find mesh components
-		for (u16 j = 0; j < curObj->SubComponents.size(); j++)
+		GameObject *currentObject = FullGameObjectList[i];
+
+		for (u16 j = 0; j < currentObject->SubComponents.size(); j++)
 		{
-			//Dynamic casting to identify type;
-			MeshComponent *meshComp = dynamic_cast<MeshComponent *>(curObj->SubComponents[j]);
-			if (meshComp && !meshComp->isDisabled)
+			RigidbodyComponent *tempComp = dynamic_cast<RigidbodyComponent *>(currentObject->SubComponents[j]);
+
+			if (tempComp && !tempComp->isDisabled)
 			{
-				meshCompList.push_back(meshComp);
+				compList.push_back(tempComp);
 			}
 		}
 	}
-	return meshCompList;
+
+	return compList;
 }

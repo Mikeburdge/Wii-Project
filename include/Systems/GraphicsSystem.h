@@ -39,8 +39,6 @@ public:
 
 	void InitGXVideo();
 
-	void CameraInit(void);
-
 	void SetLight();
 
 	bool LoadMeshFromObj(std::string name, void *fileStream, unsigned int fileSize);
@@ -82,7 +80,7 @@ public:
 	GXColor background;
 
 public:
-	// TPLFile m_paletteTPL;
-	// GXTexObj m_paletteTexture;
+	TPLFile paletteTPL;
+	GXTexObj paletteTexture;
 
 };

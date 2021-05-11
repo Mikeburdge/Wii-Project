@@ -2,23 +2,47 @@
 
 #include "Systems/EntitySystem.h"
 
+#include "Components/GameObject.h"
 #include "Components/TransformComponent.h"
 
-//LoadMeshFromObj
 #include <stdio.h>
 #include <vector>
 
 //Models To Load
 #include "Beagle_obj.h"
+#include "Dog_obj.h"
+#include "LowPolyDog_obj.h"
 #include "pool_ball_white_obj.h"
+
+#include "pool_ball_red_obj.h"
+#include "pool_ball_blue_obj.h"
 
 #include <string.h>
 #include "ogc/gu.h"
 
+//Textures
+#include "palette_tpl.h"
+#include "palette.h"
+
 using namespace std;
+
+GraphicsSystem *GraphicsSystem::myInstance = 0;
+
+GraphicsSystem *GraphicsSystem::GetInstance()
+{
+	if (!myInstance)
+	{
+		myInstance = new GraphicsSystem();
+	}
+	return myInstance;
+}
 
 GraphicsSystem::GraphicsSystem()
 {
+	camPt = {0.0F, 0.0F, 0.0F};
+	up = {0.0F, 1.0F, 0.0F};
+	origin = {0.0F, 0.0F, -1.0F};
+
 	pitch = 0;
 	yaw = 0;
 
@@ -31,30 +55,25 @@ GraphicsSystem::GraphicsSystem()
 
 	//Models to include in the game
 
-	if (!LoadMeshFromObj("Beagle_obj", (void *)Beagle_obj, Beagle_obj_size))
+	// if (!LoadMeshFromObj("Beagle_obj", (void *)Beagle_obj, Beagle_obj_size))
+	// 	exit(0);
+	if (!LoadMeshFromObj("pool_ball_white", (void *)pool_ball_white_obj, pool_ball_white_obj_size))
 		exit(0);
-	if (!LoadMeshFromObj("pool_ball_white_obj", (void *)pool_ball_white_obj, pool_ball_white_obj_size))
-		exit(0);
+	// if (!LoadMeshFromObj("Dog_obj", (void *)Dog_obj, Dog_obj_size))
+	// 	exit(0);
+	// if (!LoadMeshFromObj("LowPolyDog_obj", (void *)LowPolyDog_obj, LowPolyDog_obj_size))
+	// 	exit(0);
 
-	//Initialises the video
+	// if (!LoadMeshFromObj("pool_ball_red", (void *)pool_ball_red_obj, pool_ball_red_obj_size))
+	// 	exit(0);
+	// if (!LoadMeshFromObj("pool_ball_blue", (void *)pool_ball_blue_obj, pool_ball_blue_obj_size))
+	// 	exit(0);
+
+	//Initialises the video and camera
 	InitGXVideo();
-
-	// Initialize the camera.
-	CameraInit();
 }
 
 GraphicsSystem::~GraphicsSystem() {}
-
-GraphicsSystem *GraphicsSystem::myInstance = 0;
-
-GraphicsSystem *GraphicsSystem::GetInstance()
-{
-	if (!myInstance)
-	{
-		myInstance = new GraphicsSystem();
-	}
-	return myInstance;
-}
 
 void GraphicsSystem::Init() {}
 
@@ -69,7 +88,7 @@ void GraphicsSystem::Update(float deltaTime)
 	EntitySystem *sysEntity = EntitySystem::GetInstance();
 
 	//Draw
-	// DrawMeshes(sysEntity->GetMeshComponentList());
+	DrawMeshes(sysEntity->GetMeshComponentList());
 
 	//Call last each frame
 	EndFrame();
@@ -136,8 +155,13 @@ void GraphicsSystem::InitGXVideo()
 	GX_SetCullMode(GX_CULL_NONE);
 	GX_CopyDisp(videoFrameBuffer[videoFrameBufferIndex], GX_TRUE);
 	GX_SetDispCopyGamma(GX_GM_1_0);
+	// Texture vertex format setup
+	GX_ClearVtxDesc();
 
-	//My models are drawn to this index
+	GX_SetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XY, GX_F32, 0);
+	GX_SetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX0, GX_TEX_ST, GX_F32, 0);
+	GX_SetVtxAttrFmt(GX_VTXFMT0, GX_VA_CLR0, GX_CLR_RGBA, GX_RGBA8, 0);
+
 	GX_SetVtxAttrFmt(GX_VTXFMT1, GX_VA_POS, GX_POS_XYZ, GX_F32, 0);
 	GX_SetVtxAttrFmt(GX_VTXFMT1, GX_VA_NRM, GX_NRM_XYZ, GX_F32, 0);
 	GX_SetVtxAttrFmt(GX_VTXFMT1, GX_VA_TEX0, GX_TEX_ST, GX_F32, 0);
@@ -151,18 +175,13 @@ void GraphicsSystem::InitGXVideo()
 	//Invalidates the vertex cache and current texture memory cache
 	GX_InvVtxCache();
 	GX_InvalidateTexAll();
-
+	//Load palette.bmp texture
+	TPL_OpenTPLFromMemory(&paletteTPL, (void *)palette_tpl, palette_tpl_size);
+	TPL_GetTexture(&paletteTPL, palette, &paletteTexture);
 	//Setup TEV (Texture Environment) Stage
 	GX_SetTevOp(GX_TEVSTAGE0, GX_MODULATE);
 	GX_SetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR0A0);
 	GX_SetTexCoordGen(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, GX_IDENTITY);
-}
-
-void GraphicsSystem::CameraInit(void)
-{
-	camPt = {0.0F, 0.0F, 0.0F};
-	up = {0.0F, 1.0F, 0.0F};
-	origin = {0.0F, 0.0F, -1.0F};
 
 	f32 w = videoMode->viWidth;
 	f32 h = videoMode->viHeight;
@@ -204,10 +223,7 @@ bool GraphicsSystem::LoadMeshFromObj(string name, void *fileStream, unsigned int
 	FILE *file = fmemopen(fileStream, fileSize, "r");
 
 	if (file == NULL)
-	{
-		printf("Impossible to open the file !\n"); //todo maybe remove this line if its not doing anything
 		return false;
-	}
 
 	while (1)
 	{
@@ -289,7 +305,8 @@ bool GraphicsSystem::LoadMeshFromObj(string name, void *fileStream, unsigned int
 
 void GraphicsSystem::DrawMeshes(vector<MeshComponent *> meshes)
 {
-	//ill leave textures for now
+	//Load Texture into the hardware register
+	GX_LoadTexObj(&paletteTexture, GX_TEXMAP0);
 
 	GX_ClearVtxDesc();
 	GX_SetVtxDesc(GX_VA_POS, GX_DIRECT);
