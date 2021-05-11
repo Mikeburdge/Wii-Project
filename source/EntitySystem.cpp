@@ -53,19 +53,31 @@ void EntitySystem::LoadScene(SceneName InScene)
 		sysGraphics->yaw = 0;
 		sysGraphics->pitch = 0;
 
-		// GameObject *coolDog = new GameObject("CoolDog", Maff::VectorZero, Maff::QuaternionIdentity, Maff::VectorOne);
-		// coolDog->AddComponent(new MeshComponent("Beagle"));
-		// AddObject(coolDog);
-
 		GameObject *whiteBall = new GameObject();
 		whiteBall->AddComponent(new MeshComponent("WhiteBallMesh"));
 		whiteBall->AddComponent(new RigidbodyComponent(0.5f, 1.0f, false, false));
 		AddObject(whiteBall);
 
-		GameObject *whiteBall2 = new GameObject("WhiteBall", guVector{1, 0, 0});
-		whiteBall->AddComponent(new MeshComponent("DogMesh"));
-		whiteBall->AddComponent(new RigidbodyComponent(0.5f, 1.0f, false, false));
-		AddObject(whiteBall2);
+		// GameObject *whiteBall2 = new GameObject("WhiteBall", guVector{1, 0, 0});
+		// whiteBall2->AddComponent(new MeshComponent("DogMesh"));
+		// whiteBall2->AddComponent(new RigidbodyComponent(0.5f, 1.0f, false, false));
+		// AddObject(whiteBall2);
+
+		// GameObject *DogOnlineConverter = new GameObject("DogOnlineConverter", guVector{1, 0, 0});
+		// DogOnlineConverter->AddComponent(new MeshComponent("DogOnlineConverterMesh"));
+		// DogOnlineConverter->AddComponent(new RigidbodyComponent(0.5f, 1.0f, false, false));
+		// AddObject(DogOnlineConverter);
+
+		// GameObject *WillDog = new GameObject("WillDog", guVector{1, 0, 0});
+		// WillDog->AddComponent(new MeshComponent("WillDogMesh"));
+		// WillDog->AddComponent(new RigidbodyComponent(0.5f, 1.0f, false, false));
+		// AddObject(WillDog);
+
+		// GameObject *GreenGoblinMask = new GameObject("GreenGoblinMask");
+		// GreenGoblinMask->AddComponent(new MeshComponent("GreenGoblinMaskMesh"));
+		// GreenGoblinMask->AddComponent(new RigidbodyComponent(0.5f, 1.0f, false, false));
+
+		// AddObject(GreenGoblinMask);
 
 		// GameObject *dog = new GameObject("DogObject", {1, 0, 0}, Maff::QuaternionIdentity, Maff::VectorOne);
 		// dog->AddComponent(new MeshComponent("DogMesh"));

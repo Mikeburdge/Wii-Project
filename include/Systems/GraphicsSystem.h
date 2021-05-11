@@ -43,7 +43,7 @@ public:
 
 	bool LoadMeshFromObj(std::string name, void *fileStream, unsigned int fileSize);
 
-	void DrawMeshes(vector<MeshComponent *> meshes);
+	void DrawMeshes(vector<MeshComponent *> meshes, float deltaTime);
 
 	//Called at the end of each frame
 	void EndFrame();
