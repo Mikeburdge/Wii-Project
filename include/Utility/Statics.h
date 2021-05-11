@@ -2,17 +2,10 @@
 
 #include <string>
 
-
-class Debug
+namespace Debug
 {
-private:
-    
-public:
-    Debug();
-    ~Debug();
 
-    static std::string getCurrentDateTime( std::string s );
+    static std::string getCurrentDateTime(std::string s);
 
-    static void Log( std::string logMsg );
-
-};
+    static void Log(std::string logMsg);
+}

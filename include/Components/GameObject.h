@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include "Components/Component.h"
 #include "Components/TransformComponent.h"
 
@@ -32,6 +31,7 @@ public:
     template <class T>
     T *FindComponent();
 
+    std::string Name;
 
     TransformComponent Transform;
 

@@ -19,8 +19,6 @@
 #include "LowPolyDog_obj.h"
 #include "pool_ball_white_obj.h"
 
-#include "pool_ball_red_obj.h"
-#include "pool_ball_blue_obj.h"
 
 #include <string.h>
 #include "ogc/gu.h"
@@ -61,26 +59,9 @@ GraphicsSystem::GraphicsSystem()
 
 	if (!LoadMeshFromObj("WhiteBallMesh", (void *)pool_ball_white_obj, pool_ball_white_obj_size))
 		exit(0);
-	// if (!LoadMeshFromObj("DogMesh", (void *)Dog_obj, Dog_obj_size))
-	// 	exit(0);
-	// if (!LoadMeshFromObj("DogOnlineConverterMesh", (void *)DogOnlineConverter_obj, DogOnlineConverter_obj_size))
-	// 	exit(0);
+	if (!LoadMeshFromObj("DogMesh", (void *)Dog_obj, Dog_obj_size))
+		exit(0);
 
-	// if (!LoadMeshFromObj("WillDog", (void *)WillDog_obj, WillDog_obj_size))
-	// 	exit(0);
-	// if (!LoadMeshFromObj("LowPolyDog_obj", (void *)LowPolyDog_obj, LowPolyDog_obj_size))
-	// 	exit(0);
-
-	// if (!LoadMeshFromObj("pool_ball_red", (void *)pool_ball_red_obj, pool_ball_red_obj_size))
-	// 	exit(0);
-	// if (!LoadMeshFromObj("pool_ball_blue", (void *)pool_ball_blue_obj, pool_ball_blue_obj_size))
-	// 	exit(0);
-
-	// if (!LoadMeshFromObj("GeoSphereMesh", (void *)GeoSphere_obj, GeoSphere_obj_size))
-	// 	exit(0);
-
-	// if (!LoadMeshFromObj("GreenGoblinMaskMesh", (void *)GreenGoblinMask_obj, GreenGoblinMask_obj_size))
-	// 	exit(0);
 
 	//Initialises the video
 	InitGXVideo();
@@ -240,7 +221,7 @@ bool GraphicsSystem::LoadMeshFromObj(string name, void *fileStream, unsigned int
 
 	while (1)
 	{
-		//its silly to assume the first world of a line wont be longer than 128
+		//its silly to assume the first word of a line wont be longer than 128
 		char lineHeader[128];
 
 		// read the first word of the line
@@ -331,7 +312,7 @@ void GraphicsSystem::DrawMeshes(vector<MeshComponent *> meshes, float deltaTime)
 		MeshComponent *currentMesh = meshes[i];
 		TransformComponent meshObjectTransform = currentMesh->Owner->Transform;
 
-		//unless you know what you're doing always Scale, Rotate then Translate
+		//unless you know what you're doing always Transform, Rotate then Scale
 		guMtxIdentity(model);
 		guMtxScaleApply(model, model, meshObjectTransform.Scale.x, meshObjectTransform.Scale.y, meshObjectTransform.Scale.z);
 
@@ -339,8 +320,6 @@ void GraphicsSystem::DrawMeshes(vector<MeshComponent *> meshes, float deltaTime)
 		c_guMtxQuat(tempRotMtx, &meshObjectTransform.Rotation);
 
 		guMtxConcat(model, tempRotMtx, model);
-
-		meshObjectTransform.Position.x -= 100 * deltaTime;
 
 		guMtxTransApply(model, model, meshObjectTransform.Position.x, meshObjectTransform.Position.y, meshObjectTransform.Position.z);
 		guMtxConcat(view, model, modelview);
