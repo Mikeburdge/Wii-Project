@@ -39,35 +39,33 @@ GraphicsSystem *GraphicsSystem::GetInstance()
 
 GraphicsSystem::GraphicsSystem()
 {
+	background = {80, 80, 255, 0};
 	camPt = {0.0F, 0.0F, 0.0F};
 	up = {0.0F, 1.0F, 0.0F};
-	origin = {0.0F, 0.0F, -1.0F};
+	look = {0.0F, 0.0F, -1.0F};
 
 	pitch = 0;
 	yaw = 0;
 
-
 	lightColor[0] = {255, 255, 255, 255};
 	lightColor[1] = {150, 150, 150, 255};
-
-	background = {80, 80, 255, 0};
 
 	videoFrameBufferIndex = 0;
 	//Models to include in the game
 
 	// if (!LoadMeshFromObj("Beagle_obj", (void *)Beagle_obj, Beagle_obj_size))
 	// 	exit(0);
-	if (!LoadMeshFromObj("pool_ball_white", (void *)pool_ball_white_obj, pool_ball_white_obj_size))
+	if (!LoadMeshFromObj("WhiteBallMesh", (void *)pool_ball_white_obj, pool_ball_white_obj_size))
 		exit(0);
-	// if (!LoadMeshFromObj("Dog_obj", (void *)Dog_obj, Dog_obj_size))
-	// 	exit(0);
+	if (!LoadMeshFromObj("DogMesh", (void *)Dog_obj, Dog_obj_size))
+		exit(0);
 	// if (!LoadMeshFromObj("LowPolyDog_obj", (void *)LowPolyDog_obj, LowPolyDog_obj_size))
 	// 	exit(0);
 
-	// if (!LoadMeshFromObj("pool_ball_red", (void *)pool_ball_red_obj, pool_ball_red_obj_size))
-	// 	exit(0);
-	// if (!LoadMeshFromObj("pool_ball_blue", (void *)pool_ball_blue_obj, pool_ball_blue_obj_size))
-	// 	exit(0);
+	if (!LoadMeshFromObj("pool_ball_red", (void *)pool_ball_red_obj, pool_ball_red_obj_size))
+		exit(0);
+	if (!LoadMeshFromObj("pool_ball_blue", (void *)pool_ball_blue_obj, pool_ball_blue_obj_size))
+		exit(0);
 
 	//Initialises the video
 	InitGXVideo();
@@ -80,7 +78,7 @@ void GraphicsSystem::Init() {}
 void GraphicsSystem::Update(float deltaTime)
 {
 	//Create a viewing matrix
-	guLookAt(view, &camPt, &up, &origin);
+	guLookAt(view, &camPt, &up, &look);
 
 	//Update Lighting
 	SetLight();
@@ -304,7 +302,7 @@ bool GraphicsSystem::LoadMeshFromObj(string name, void *fileStream, unsigned int
 }
 
 void GraphicsSystem::DrawMeshes(vector<MeshComponent *> meshes)
-{
+{ 
 	//Load Texture into the hardware register
 	GX_LoadTexObj(&paletteTexture, GX_TEXMAP0);
 

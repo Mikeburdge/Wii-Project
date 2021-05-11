@@ -63,7 +63,7 @@ public:
 	//Matrices - Coordinate spaces
 	Mtx view, model, modelview;
 	Mtx44 projection;
-	guVector camPt, up, origin;
+	guVector camPt, up, look;
 	float pitch, yaw;
 
 public:

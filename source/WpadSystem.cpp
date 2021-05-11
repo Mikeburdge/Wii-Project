@@ -52,54 +52,45 @@ void WPadSystem::Update(float deltaTime)
 
         if (wButtonsHeld & WPAD_BUTTON_LEFT)
         {
-            guVector direction = guVector{-1, 0, 0};
-            guVecAdd(&transformComp->Position, &direction, &transformComp->Position);
+            transformComp->Position.x -= 1 * deltaTime;
         }
         if (wButtonsDown & WPAD_BUTTON_LEFT)
         {
-            guVector direction = guVector{-1, 0, 0};
-            guVecAdd(&transformComp->Position, &direction, &transformComp->Position);
+            transformComp->Position.x -= 1 * deltaTime;
         }
         if (wButtonsHeld & WPAD_BUTTON_RIGHT)
         {
-            guVector direction = guVector{1, 0, 0};
-            guVecAdd(&transformComp->Position, &direction, &transformComp->Position);
+            transformComp->Position.x += 1 * deltaTime;
         }
         if (wButtonsDown & WPAD_BUTTON_RIGHT)
         {
-            guVector direction = guVector{1, 0, 0};
-            guVecAdd(&transformComp->Position, &direction, &transformComp->Position);
+            transformComp->Position.x += 1 * deltaTime;
         }
         if (wButtonsHeld & WPAD_BUTTON_UP)
         {
-            guVector direction = guVector{0, 1, 0};
-            guVecAdd(&transformComp->Position, &direction, &transformComp->Position);
+            transformComp->Position.y += 1 * deltaTime;
         }
         if (wButtonsDown & WPAD_BUTTON_UP)
         {
-            guVector direction = guVector{0, 1, 0};
-            guVecAdd(&transformComp->Position, &direction, &transformComp->Position);
+            transformComp->Position.y += 1 * deltaTime;
         }
         if (wButtonsHeld & WPAD_BUTTON_DOWN)
         {
-            guVector direction = guVector{0, -1, 0};
-            guVecAdd(&transformComp->Position, &direction, &transformComp->Position);
+            transformComp->Position.y -= 1 * deltaTime;
         }
         if (wButtonsDown & WPAD_BUTTON_DOWN)
         {
-            guVector direction = guVector{0, -1, 0};
-            guVecAdd(&transformComp->Position, &direction, &transformComp->Position);
+            transformComp->Position.y -= 1 * deltaTime;
         }
-
-        //check if buttons are down
-        u32 pressed = WPAD_ButtonsDown(0);
-        if (pressed)
-        {
-        }
-
-        // IR Movement
-        WPAD_IR(0, &ir);
     }
+    //check if buttons are down
+    u32 pressed = WPAD_ButtonsDown(0);
+    if (pressed)
+    {
+    }
+
+    // IR Movement
+    WPAD_IR(0, &ir);
 }
 
 void WPadSystem::ScanPad(int PadNumber)
