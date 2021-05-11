@@ -185,9 +185,9 @@ void GraphicsSystem::InitGXVideo()
 	f32 h = videoMode->viHeight;
 
 	//creates a perspective projection matrix with a view angle of 90,
-	guPerspective(projection, 45, (f32)w / h, 0.1F, 1000.0F);
+	guPerspective(perspective, 45, (f32)w / h, 0.1F, 1000.0F);
 
-	GX_LoadProjectionMtx(projection, GX_PERSPECTIVE);
+	GX_LoadProjectionMtx(perspective, GX_PERSPECTIVE);
 }
 
 void GraphicsSystem::SetLight()
