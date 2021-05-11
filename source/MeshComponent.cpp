@@ -4,26 +4,23 @@
 
 MeshComponent::MeshComponent(std::string name)
 {
-    GetModel(name);
+	GetModel(name);
 }
 
 MeshComponent::~MeshComponent() {}
 
 bool MeshComponent::GetModel(string name)
 {
-    GraphicsSystem *sysGraphics = GraphicsSystem::GetInstance();
-
-    vector<Mesh> tempMeshVector = sysGraphics->meshCollection;
-
-    for (u16 i = 0; i < tempMeshVector.size(); i++)
-    {
-        if (tempMeshVector[i].name.compare(name))
-        {
-            Vertices = tempMeshVector[i].vertices;
-            UVs = tempMeshVector[i].uvs;
-            Normals = tempMeshVector[i].normals;
-            return true;
-        }
-    }
-    return false;
+	GraphicsSystem *sysGraphics = GraphicsSystem::GetInstance();
+	for (u16 i = 0; i < sysGraphics->meshCollection.size(); i++)
+	{
+		if (sysGraphics->meshCollection[i].name.compare(name))
+		{
+			Vertices = sysGraphics->meshCollection[i].vertices;
+			UVs = sysGraphics->meshCollection[i].uvs;
+			Normals = sysGraphics->meshCollection[i].normals;
+			return true;
+		}
+	}
+	return false;
 }
