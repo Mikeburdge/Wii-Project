@@ -53,36 +53,50 @@ void WPadSystem::Update(float deltaTime)
 
         if (wButtonsHeld & WPAD_BUTTON_LEFT)
         {
-            transformComp->Position.x -= 100 * deltaTime;
+            transformComp->Position.x -= 1;
         }
         if (wButtonsDown & WPAD_BUTTON_LEFT)
         {
-            transformComp->Position.x -= 100 * deltaTime;
+            transformComp->Position.x -= 1;
         }
         if (wButtonsHeld & WPAD_BUTTON_RIGHT)
         {
-            transformComp->Position.x += 100 * deltaTime;
+            transformComp->Position.x += 1;
         }
         if (wButtonsDown & WPAD_BUTTON_RIGHT)
         {
-            transformComp->Position.x += 100 * deltaTime;
+            transformComp->Position.x += 1;
         }
         if (wButtonsHeld & WPAD_BUTTON_UP)
         {
-            transformComp->Position.y += 100 * deltaTime;
+            transformComp->Position.y += 1;
         }
         if (wButtonsDown & WPAD_BUTTON_UP)
         {
-            transformComp->Position.y += 100 * deltaTime;
+            transformComp->Position.y += 1;
         }
         if (wButtonsHeld & WPAD_BUTTON_DOWN)
         {
-            transformComp->Position.y -= 100 * deltaTime;
+            transformComp->Position.y -= 1;
         }
         if (wButtonsDown & WPAD_BUTTON_DOWN)
         {
-            transformComp->Position.y -= 100 * deltaTime;
+            transformComp->Position.y -= 1;
         }
+    }
+
+    if (wButtonsDown & WPAD_BUTTON_1)
+    {
+        EntitySystem* sysEntity = EntitySystem::GetInstance();
+
+        sysEntity->LoadScene(SceneName::Testing);
+    }
+    
+    if (wButtonsDown & WPAD_BUTTON_2)
+    {
+        EntitySystem* sysEntity = EntitySystem::GetInstance();
+
+        sysEntity->LoadScene(SceneName::Testing2ElectricBoogaloo);
     }
 
     // IR Movement

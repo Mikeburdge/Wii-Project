@@ -33,28 +33,17 @@ void PhysicsSystem::Init()
 
 void PhysicsSystem::Update(float deltaTime)
 {
-	vector<RigidbodyComponent *> rigidbodies = EntitySystem::GetInstance()->GetRigidbodyComponentList();
-	vector<pair<RigidbodyComponent *, RigidbodyComponent *>> pairs;
-	for (unsigned int i = 0; i < rigidbodies.size(); i++)
-	{
-		RigidbodyComponent *currentRb = rigidbodies[i];
-		if (currentRb->isActive)
-		{
+	// EntitySystem *sysEntity = EntitySystem::GetInstance();
 
-			guVecScale(&currentRb->force, &currentRb->acceleration, 1 / currentRb->mass);
+	// GameObject *DogObject = sysEntity->FindObjectByName("BigDog");
 
-			//Multiply acceleration by deltatime
-			guVector accelerationDeltaTime;
-			guVecScale(&currentRb->acceleration, &accelerationDeltaTime, deltaTime);
-			guVecAdd(&currentRb->velocity, &accelerationDeltaTime, &currentRb->velocity);
+	// if (DogObject)
+	// {
+	// 	DogObject->Transform.Rotation.y += 1;
 
-			guVector velocityDeltaTime;
-			guVecScale(&currentRb->velocity, &velocityDeltaTime, deltaTime);
-			guVecAdd(&currentRb->Owner->Transform.Position, &velocityDeltaTime, &currentRb->Owner->Transform.Position);
-
-			currentRb->force = Maff::VectorZero;
-		}
-	}
+	// 	if (DogObject->Transform.Rotation.y > 360.0f)
+	// 		DogObject->Transform.Rotation.y -= 360.0f;
+	// }
 }
 
 PhysicsSystem::~PhysicsSystem() {}
