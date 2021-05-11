@@ -69,7 +69,7 @@ GraphicsSystem::GraphicsSystem()
 	// if (!LoadMeshFromObj("pool_ball_blue", (void *)pool_ball_blue_obj, pool_ball_blue_obj_size))
 	// 	exit(0);
 
-	//Initialises the video and camera
+	//Initialises the video
 	InitGXVideo();
 }
 
