@@ -312,7 +312,7 @@ void GraphicsSystem::DrawMeshes(vector<MeshComponent *> meshes, float deltaTime)
 		MeshComponent *currentMesh = meshes[i];
 		TransformComponent meshObjectTransform = currentMesh->Owner->Transform;
 
-		//unless you know what you're doing always Transform, Rotate then Scale
+		//Scale, Rotate then Transform
 		guMtxIdentity(model);
 		guMtxScaleApply(model, model, meshObjectTransform.Scale.x, meshObjectTransform.Scale.y, meshObjectTransform.Scale.z);
 

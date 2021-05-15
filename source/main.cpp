@@ -39,7 +39,7 @@ int main(int argc, char **argv)
   //Calls Initial Functions (apparently, cant find anything what it is)
   __lwp_watchdog_init();
 
-  // Debug::Log("start of main");
+  Debug::Log("start of main");
 
   float lastTime = gettime();
 
