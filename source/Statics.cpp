@@ -9,7 +9,6 @@
 #include <wiiuse/wpad.h>
 #include <zlib.h>
 #include <fat.h>
-#include "mxml/mxml.h"
 
 using namespace std;
 
@@ -59,37 +58,37 @@ namespace Debug
 
     void Log(string logMsg)
     {
-        mxml_node_t *xml;
-        mxml_node_t *data;
-        xml = mxmlNewXML("1.0");
+        // mxml_node_t *xml;
+        // mxml_node_t *data;
+        // xml = mxmlNewXML("1.0");
 
-        data = mxmlNewElement(xml, "settings");
+        // data = mxmlNewElement(xml, "settings");
 
-        char set1[1];
-        sprintf(set1, "%i", setting_background_music);
-        mxmlElementSetAttr(data, "setting_background_music", set1);
-        char set2[1];
-        sprintf(set2, "%i", setting_rumble);
-        mxmlElementSetAttr(data, "setting_rumble", set2);
-        char set3[1];
-        sprintf(set3, "%i", setting_tips);
-        mxmlElementSetAttr(data, "setting_tips", set3);
+        // char set1[1];
+        // sprintf(set1, "%i", setting_background_music);
+        // mxmlElementSetAttr(data, "setting_background_music", set1);
+        // char set2[1];
+        // sprintf(set2, "%i", setting_rumble);
+        // mxmlElementSetAttr(data, "setting_rumble", set2);
+        // char set3[1];
+        // sprintf(set3, "%i", setting_tips);
+        // mxmlElementSetAttr(data, "setting_tips", set3);
 
-        FILE *f;
-        f = fopen("sd:/settings.xml", "wb");
+        // FILE *f;
+        // f = fopen("sd:/settings.xml", "wb");
 
-        if (f == NULL)
-        {
-            fclose(f);
-            printf("Settings could not be written.\n");
-        }
-        else
-        {
-            mxmlSaveFile(xml, f, MXML_NO_CALLBACK);
-            fclose(f);
-            mxmlDelete(data);
-            mxmlDelete(xml);
-            printf("Settings Saved\n\n");
-        }
+        // if (f == NULL)
+        // {
+        //     fclose(f);
+        //     printf("Settings could not be written.\n");
+        // }
+        // else
+        // {
+        //     mxmlSaveFile(xml, f, MXML_NO_CALLBACK);
+        //     fclose(f);
+        //     mxmlDelete(data);
+        //     mxmlDelete(xml);
+        //     printf("Settings Saved\n\n");
+        // }
     }
 }

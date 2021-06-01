@@ -6,7 +6,7 @@
 extern const uint8_t GreenGoblinMask_obj[];
 extern const uint8_t GreenGoblinMask_obj_end[];
 #if __cplusplus >= 201103L
-static constexpr size_t GreenGoblinMask_obj_size=250629;
+static constexpr size_t GreenGoblinMask_obj_size=223866;
 #else
-static const size_t GreenGoblinMask_obj_size=250629;
+static const size_t GreenGoblinMask_obj_size=223866;
 #endif

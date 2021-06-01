@@ -16,7 +16,7 @@ public:
 
     /**
     * Initialize
-    *     * Use for setting variables when the system is first set up
+    * Use for setting variables when the system is first set up
     */
     virtual void Init() = 0;
 

@@ -35,11 +35,11 @@ u8 HIGH_LIMIT = 0.1f;   // Keep At/Above 10fps
  * @return Program exit status code.
  */
 int main(int argc, char **argv)
-{  
+{
   //Calls Initial Functions (apparently, cant find anything what it is)
   __lwp_watchdog_init();
 
-  Debug::Log("start of main");
+  // Debug::Log("start of main");
 
   float lastTime = gettime();
 
@@ -56,7 +56,7 @@ int main(int argc, char **argv)
   // AISystem *SysAI = AISystem::GetInstance();
 
   //Load the first scene we want to see
-  SysEntity->LoadScene(SceneName::Testing);
+  SysEntity->LoadScene(SceneName::Starting);
 
   while (true)
   {

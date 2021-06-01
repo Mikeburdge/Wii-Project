@@ -11,14 +11,13 @@
 //Models To Load
 #include "GeoSphere_obj.h"
 #include "GreenGoblinMask_obj.h"
-#include "DogOnlineConverter_obj.h"
+#include "DogImproved_obj.h"
 #include "WillDog_obj.h"
 
 #include "Beagle_obj.h"
 #include "Dog_obj.h"
 #include "LowPolyDog_obj.h"
 #include "pool_ball_white_obj.h"
-
 
 #include <string.h>
 #include "ogc/gu.h"
@@ -56,12 +55,14 @@ GraphicsSystem::GraphicsSystem()
 	videoFrameBufferIndex = 0;
 
 	//Models to include in the game
-
 	if (!LoadMeshFromObj("WhiteBallMesh", (void *)pool_ball_white_obj, pool_ball_white_obj_size))
 		exit(0);
-	if (!LoadMeshFromObj("DogMesh", (void *)Dog_obj, Dog_obj_size))
+	// if (!LoadMeshFromObj("DogMesh", (void *)Dog_obj, Dog_obj_size))
+	// 	exit(0);
+	if (!LoadMeshFromObj("GreenGoblinMaskMesh", (void *)GreenGoblinMask_obj, GreenGoblinMask_obj_size))
 		exit(0);
-
+	if (!LoadMeshFromObj("DogImprovedMesh", (void *)DogImproved_obj, DogImproved_obj_size))
+		exit(0);
 
 	//Initialises the video
 	InitGXVideo();
@@ -314,14 +315,20 @@ void GraphicsSystem::DrawMeshes(vector<MeshComponent *> meshes, float deltaTime)
 
 		//Scale, Rotate then Transform
 		guMtxIdentity(model);
-		guMtxScaleApply(model, model, meshObjectTransform.Scale.x, meshObjectTransform.Scale.y, meshObjectTransform.Scale.z);
+		guMtxScaleApply(model, model,
+						meshObjectTransform.Scale.x,
+						meshObjectTransform.Scale.y,
+						meshObjectTransform.Scale.z);
 
 		Mtx tempRotMtx;
 		c_guMtxQuat(tempRotMtx, &meshObjectTransform.Rotation);
 
 		guMtxConcat(model, tempRotMtx, model);
 
-		guMtxTransApply(model, model, meshObjectTransform.Position.x, meshObjectTransform.Position.y, meshObjectTransform.Position.z);
+		guMtxTransApply(model, model,
+						meshObjectTransform.Position.x,
+						meshObjectTransform.Position.y,
+						meshObjectTransform.Position.z);
 		guMtxConcat(view, model, modelview);
 
 		GX_LoadPosMtxImm(modelview, GX_PNMTX0);

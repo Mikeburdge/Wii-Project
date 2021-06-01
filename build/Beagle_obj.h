@@ -6,7 +6,7 @@
 extern const uint8_t Beagle_obj[];
 extern const uint8_t Beagle_obj_end[];
 #if __cplusplus >= 201103L
-static constexpr size_t Beagle_obj_size=4180615;
+static constexpr size_t Beagle_obj_size=5125880;
 #else
-static const size_t Beagle_obj_size=4180615;
+static const size_t Beagle_obj_size=5125880;
 #endif

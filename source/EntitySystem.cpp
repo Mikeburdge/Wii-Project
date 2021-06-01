@@ -52,15 +52,15 @@ void EntitySystem::LoadScene(SceneName InScene)
 		sysGraphics->yaw = 0;
 		sysGraphics->pitch = 0;
 
-		GameObject *whiteBall = new GameObject("WhiteBall", guVector{10, 0, 0});
-		whiteBall->AddComponent(new MeshComponent("WhiteBallMesh"));
-		whiteBall->AddComponent(new RigidbodyComponent(0.5f, 1.0f, false, false));
-		AddObject(whiteBall);
+		GameObject *GreenGoblinMask = new GameObject("GreenGoblinMask", guVector{0, 0, 0});
+		GreenGoblinMask->AddComponent(new MeshComponent("GreenGoblinMaskMesh"));
+		GreenGoblinMask->AddComponent(new RigidbodyComponent(0.5f, 1.0f, false, false));
+		AddObject(GreenGoblinMask);
 
-		GameObject *whiteBall2 = new GameObject("WhiteBall2", guVector{-10, 0, 0});
-		whiteBall2->AddComponent(new MeshComponent("WhiteBallMesh"));
-		whiteBall2->AddComponent(new RigidbodyComponent(0.5f, 1.0f, false, false));
-		AddObject(whiteBall2);
+		// GameObject *whiteBall2 = new GameObject("WhiteBall2", guVector{-10, 0, 0});
+		// whiteBall2->AddComponent(new MeshComponent("WhiteBallMesh"));
+		// whiteBall2->AddComponent(new RigidbodyComponent(0.5f, 1.0f, false, false));
+		// AddObject(whiteBall2);
 
 		// GameObject *DogOnlineConverter = new GameObject("DogOnlineConverter", guVector{1, 0, 0});
 		// DogOnlineConverter->AddComponent(new MeshComponent("DogOnlineConverterMesh"));
@@ -84,10 +84,10 @@ void EntitySystem::LoadScene(SceneName InScene)
 	case SceneName::Testing2ElectricBoogaloo:
 	{
 
-		GameObject *dog = new GameObject("BigDog", {0, 0, 0}, Maff::QuaternionIdentity, Maff::VectorOne);
-		dog->AddComponent(new MeshComponent("DogMesh"));
-		AddObject(dog);
-
+		GameObject *DogImproved = new GameObject("DogImproved", guVector{30, 0, 0});
+		DogImproved->AddComponent(new MeshComponent("DogImprovedMesh"));
+		DogImproved->AddComponent(new RigidbodyComponent(0.5f, 1.0f, false, false));
+		AddObject(DogImproved);
 		break;
 	}
 
